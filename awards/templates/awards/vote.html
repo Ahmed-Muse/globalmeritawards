@@ -1,0 +1,16 @@
+{% if forms %}
+    {% for category, form in forms.items %}
+        {% if category not in voted_categories %}
+            <h2>Vote for {{ category }}</h2>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="category" value="{{ form.instance.category.id }}">
+                {{ form.as_p }}
+                <button type="submit">Vote</button>
+            </form>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <p>You have voted in all categories.</p>
+{% endif %}
+<a href="{% url 'awards:logout' %}">Logout</a>
