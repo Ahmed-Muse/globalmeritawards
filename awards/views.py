@@ -5,6 +5,15 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegistrationForm, VoteForm
 from .models import Category, Vote
 
+def gmaWebsite(request):
+    try:
+        title="Global Merit Awards"
+        context={"title":title,}
+        return render(request,'awards/website/website.html',context)
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -59,8 +68,6 @@ def vote(request):
     return render(request, 'awards/vote.html', {'forms': forms, 'voted_categories': voted_categories, 'errors': errors})
 
 
-
-from django.shortcuts import render, redirect, get_object_or_404
 from .models import Category, Company, Vote
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
