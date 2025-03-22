@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import RegistrationForm, VoteForm
-from .models import Category, Vote
+from .forms import CommonAddCategoryForm,CommonAddCompanyForm,CommonAddVoteForm
+from .models import CategoriesModel,CompaniesModel,VotesModel
+from django.db import IntegrityError
+
+from django.contrib import messages
 
 def gmaWebsite(request):
     try:
@@ -14,43 +17,284 @@ def gmaWebsite(request):
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
 
-def register(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('awards:vote')
-    else:
-        form = RegistrationForm()
-    return render(request, 'awards/register.html', {'form': form})
+def categories(request):
+    try:
+        title="Main Categories"
+        allifqueryset=CategoriesModel.objects.all()
+        context = {
+            "title":title,
+            "allifqueryset":allifqueryset,
+        }
+        return render(request,'awards/categories/categories.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
 
-def user_login(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('awards:vote')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'awards/login.html', {'form': form})
+def addCategory(request):
+    try:
+        title="Add New Category"
+        form=CommonAddCategoryForm()
+        if request.method == 'POST':
+            form=CommonAddCategoryForm(request.POST or None)
+            if form.is_valid():
+                obj=form.save(commit=False)
+                #obj.owner =user_var
+                obj.save()
+                return redirect('awards:categories')
+            else:
+                form=CommonAddCategoryForm()
+        else:
+            form=CommonAddCategoryForm()
+        context = {
+            "title":title,
+            "form":form,
+            
+        }
+        return render(request,'awards/categories/add-category.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+def editCategory(request,pk):
+    try:
+        title="Update Category Details"
+        update_allifquery=CategoriesModel.objects.get(id=pk)
+        form =CommonAddCategoryForm(instance=update_allifquery)
+        if request.method == 'POST':
+            form =CommonAddCategoryForm(request.POST, instance=update_allifquery)
+            if form.is_valid():
+                obj=form.save(commit=False)
+                #obj.owner =user_var
+                obj.save()
+                return redirect('awards:categories')
+            else:
+                form =CommonAddCategoryForm(instance=update_allifquery)
+        else:
+            form =CommonAddCategoryForm(instance=update_allifquery)
+        context = {
+            'form':form,
+            "update_allifquery":update_allifquery,
+            "title":title,
+            
+        }
+        return render(request,'awards/categories/add-category.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
 
-def user_logout(request):
-    logout(request)
-    return redirect('awards:login')
-from django.db import IntegrityError
+def deleteCategory(request,pk):
+    try:
+        CategoriesModel.objects.filter(id=pk).first().delete()
+        return redirect('awards:categories')
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+
+def companies(request):
+    try:
+        title="Main Categories"
+        allifqueryset=CompaniesModel.objects.all()
+        context = {
+            "title":title,
+            "allifqueryset":allifqueryset,
+        }
+        return render(request,'awards/companies/companies.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+def addCompany(request):
+    try:
+        title="Add New Company"
+        form=CommonAddCompanyForm()
+        if request.method == 'POST':
+            form=CommonAddCompanyForm(request.POST or None)
+            if form.is_valid():
+                obj=form.save(commit=False)
+                #obj.owner =user_var
+                obj.save()
+                return redirect('awards:companies')
+            else:
+                form=CommonAddCompanyForm()
+        else:
+            form=CommonAddCompanyForm()
+        context = {
+            "title":title,
+            "form":form,
+            
+        }
+        return render(request,'awards/companies/add-company.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'allifmaalcommonapp/error/error.html',error_context)
+def editCompany(request,pk):
+    try:
+        title="Update Company Details"
+        update_allifquery=CompaniesModel.objects.get(id=pk)
+        form =CommonAddCompanyForm(instance=update_allifquery)
+        if request.method == 'POST':
+            form =CommonAddCompanyForm(request.POST, instance=update_allifquery)
+            if form.is_valid():
+                obj=form.save(commit=False)
+                #obj.owner =user_var
+                obj.save()
+                return redirect('awards:companies')
+            else:
+                form =CommonAddCompanyForm(instance=update_allifquery)
+        else:
+            form =CommonAddCompanyForm(instance=update_allifquery)
+        context = {
+            'form':form,
+            "update_allifquery":update_allifquery,
+            "title":title,
+            
+        }
+        return render(request,'awards/companies/add-company.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+def deleteCompany(request,pk):
+    try:
+        CompaniesModel.objects.filter(id=pk).first().delete()
+        return redirect('awards:companies')
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+def addVote(request):
+    #try:
+        title="Add New Company"
+        categories = CategoriesModel.objects.all()
+        voted_categories = VotesModel.objects.filter(voter=request.user).values_list('category_id', flat=True)
+        form=CommonAddVoteForm()
+        forms = {}
+        errors = {}
+        for category in categories:
+            if category.id not in voted_categories:
+                if request.method == 'POST' and request.POST.get('category') == str(category.id):
+                    form = CommonAddVoteForm(request.POST, category=category)
+                    if form.is_valid():
+                        try:
+                            vote = form.save(commit=False)
+                            vote.user = request.user
+                            vote.category = category
+                            vote.save()
+                            return redirect('awards:vote')
+                        except IntegrityError:
+                            errors[category.name] = "You have already voted in this category."
+                    else:
+                        errors[category.name] = form.errors
+                else:
+                    form = CommonAddVoteForm()
+                forms[category.name] = form
+
+        #if request.method == 'POST':
+            #form=CommonAddVoteForm(request.POST or None)
+            #if form.is_valid():
+                #obj=form.save(commit=False)
+                #obj.owner =user_var
+                #obj.save()
+                #return redirect('awards:votes')
+            #else:
+                #form=CommonAddVoteForm()
+        #else:
+            #form=CommonAddVoteForm()
+        context = {
+            "title":title,
+            "form":form,
+            "voted_categories":voted_categories,
+            
+        }
+        return render(request,'awards/votes/add-vote.html',context)
+    
+    #except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+def voteForCompany(request,pk):
+    try:
+        title="Votes"
+        allifquery=CompaniesModel.objects.get(id=pk)
+        initial_votes=allifquery.votes
+        allifquery.votes=initial_votes+1
+        allifquery.save()
+
+        return redirect('awards:companies')
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+def votes(request):
+    try:
+        title="Votes"
+        allifqueryset=VotesModel.objects.all()
+        context = {
+            "title":title,
+            "allifqueryset":allifqueryset,
+        }
+        return render(request,'awards/votes/votes.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+
+    
+def deleteVote(request,pk):
+    try:
+        VotesModel.objects.filter(id=pk).first().delete()
+        return redirect('awards:votes')
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)  
+    
+
+def votecategory(request,pk):
+    category = get_object_or_404(CategoriesModel, id=pk)
+    if VotesModel.objects.filter(voter=request.user, category=category).exists():
+        messages.error(request, "You have already voted in this category.")
+        return redirect('awards:categories')
+
+    if request.method == 'POST':
+        form = CommonAddVoteForm(request.POST)
+        if form.is_valid():
+            vote = form.save(commit=False)
+            vote.user = request.user
+            vote.category = category
+            vote.save()
+            messages.success(request, "Your vote has been recorded.")
+            return redirect('awards:categories')
+    else:
+        form = CommonAddVoteForm()
+        form.fields['company'].queryset = CompaniesModel.objects.filter(category=category)
+        context={
+            'form': form, 'category': category
+
+        }
+    
+    return render(request,'awards/votes/add-vote-category.html',context)
+
+    return render(request, 'votes/vote.html', {'form': form, 'category': category})
+
 @login_required
 def vote(request):
-    categories = Category.objects.all()
-    voted_categories = Vote.objects.filter(user=request.user).values_list('category_id', flat=True)
+    categories = CategoriesModel.objects.all()
+    voted_categories = VotesModel.objects.filter(user=request.user).values_list('category_id', flat=True)
     forms = {}
     errors = {}
 
     for category in categories:
         if category.id not in voted_categories:
             if request.method == 'POST' and request.POST.get('category') == str(category.id):
-                form = VoteForm(request.POST, category=category)
+                form =CommonAddVoteForm(request.POST, category=category)
                 if form.is_valid():
                     try:
                         vote = form.save(commit=False)
@@ -63,24 +307,24 @@ def vote(request):
                 else:
                     errors[category.name] = form.errors
             else:
-                form = VoteForm(category=category)
+                form = CommonAddVoteForm(category=category)
             forms[category.name] = form
     return render(request, 'awards/vote.html', {'forms': forms, 'voted_categories': voted_categories, 'errors': errors})
 
 
-from .models import Category, Company, Vote
+
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 @login_required
 def voting(request):
-    categories = Category.objects.all()
+    categories = CategoriesModel.objects.all()
     if request.method == 'POST':
         for category in categories:
             company_id = request.POST.get(f'category_{category.id}')
             if company_id:
-                company = get_object_or_404(Company, id=company_id)
-                vote, created = Vote.objects.get_or_create(
+                company = get_object_or_404(CompaniesModel, id=company_id)
+                vote, created = VotesModel.objects.get_or_create(
                     voter=request.user,
                     category=category,
                     defaults={'company': company},

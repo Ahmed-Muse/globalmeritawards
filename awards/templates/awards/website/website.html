@@ -34,7 +34,7 @@
             <li><a class="nav-link scrollto" href="#modules">Modules</a></li>
             <li><a class="nav-link scrollto" href="#pricing">Pricing</a></li>
             <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-            <li><a class="getstarted scrollto" href="{% url 'allifmaalusersapp:userLoginPage' %}">Login</a></li>
+            <li><a class="getstarted scrollto" href="{% url 'loginapp:userLoginPage' %}">Login</a></li>
 
           </ul>
           <i class="bi bi-list mobile-nav-toggle">Menu</i>
@@ -498,7 +498,7 @@
   
             <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
               
-                <form method='POST' action="{% url 'allifmaalcommonapp:commonCustomerContacts' %}" role="form" class="html-contact-form" >{% csrf_token %}
+                <form method='POST' action="" role="form" class="html-contact-form" >{% csrf_token %}
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label for="name">Your Name</label>

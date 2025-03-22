@@ -1,4 +1,4 @@
-{% extends 'allifmaalcommonapp/base/uimainbase/allifmaaluibase.html'%}
+{% extends 'awards/base/uimainbase/allifmaaluibase.html'%}
 {% load humanize %}
 {% block title %}
 {{title}}
@@ -21,7 +21,7 @@
         <div class="content-dropdown-menu">
   
         <li><a class="dropdown-item">Looking for something?</a></li>
-        <form method='POST' action="{% url 'allifmaalcommonapp:commonCompanySearch' user_var glblslug %}">{% csrf_token %}
+        <form method='POST' action="">{% csrf_token %}
         
           <input type="text" id="allifsearchcommonfield" name="allifsearchcommonfieldname" class="form-control allifsearchcommonfieldclasstwo"
           placeholder="Type Here ...">
@@ -30,7 +30,7 @@
           </form>
           <hr>
           <li><a class="dropdown-item">Select Ordering Option</a></li>
-        <form method='POST' action="{% url 'allifmaalcommonapp:commonCompanies' user_var glblslug %}" enctype="multipart/form-data">{% csrf_token %}
+        <form method='POST' action="" enctype="multipart/form-data">{% csrf_token %}
       
         <div>
         <select name="requiredformat" class="form-control">
@@ -46,7 +46,7 @@
       </form>
       <hr>
       <li><a class="dropdown-item">Advanced Searching</a></li>
-      <form method='POST' action="{% url 'allifmaalcommonapp:commonCompanyAdvanceSearch' user_var glblslug %}" enctype="multipart/form-data">{% csrf_token %}
+      <form method='POST' action="" enctype="multipart/form-data">{% csrf_token %}
         
         <div >
           <label>Start Date</label>
@@ -76,77 +76,23 @@
       </div>
       </ul>
     </div>
-    <a class="amel-table-list-identifier">Companies:</a>
+    
+    <a href="{% url 'awards:categories' %}">Categories</a>
+    <a href="{% url 'awards:addCompany' %}">New Company</a>
+    
+    <a href="{% url 'awards:companies' %}">Companies</a>
+    <a href="{% url 'awards:addCompany' %}">New Company</a>
+    <a href="{% url 'awards:votes' %}">Votes</a>
 
-    <a href="{% url 'allifmaalcommonapp:commonHome' user_var glblslug %}">Home</a>
-    <a href="{% url 'allifmaalcommonapp:commonCompanies' user_var glblslug %}">Companies</a>
-    
-    <a href="{% url 'allifmaaladminapp:adminappHome' user_var glblslug %}">Admin Home</a>
-    
-    <a href="{% url 'allifmaalcommonapp:commonSectors' user_var glblslug %}">Sectors</a>
-  <a href="{% url 'allifmaalcommonapp:commonhrm' user_var glblslug %}">HRM</a>
 
-  <a href="{% url 'allifmaalcommonapp:commonSuppliers' user_var glblslug %}" >Suppliers</a>
-  <div class="dropdown allifmaal-content-dropdown">
-    <a class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-    Modules
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-      <div class="content-dropdown-menu">
-      <li><a class="dropdown-item" href="{% url 'allifmaalcommonapp:commonSuppliers' user_var glblslug %}" >Suppliers</a></li>
-      <li><a class="dropdown-item" href="{% url 'allifmaalcommonapp:commonhrm' user_var glblslug %}" >Employees</a></li>
-      <li><a class="dropdown-item" href="{% url 'allifmaalcommonapp:commonSectors' user_var glblslug %}" >Sectors</a></li>
-    
-    </div>
-    </ul>
-  </div>
  
-  <a href="{% url 'allifmaalcommonapp:commonSuppliers' user_var glblslug %}">Suppliers</a>
-
-
   </div>
     </div><!--end....header column-->
     </div><!--end....header row-->
   </div><!--end....main headere-->
   
     <div class="allifmaincontainer">
-  
-  {% if clicked_row_data %}
-  
-<div class="row mt-12"> <!--start....table row-->
-  <div class="col-md-12"> <!--start....table column-->
-  <div class="allif-scroll-table">
-    <div class="table-responsive allif-full-table">
-    <table class="table table-layout">
-      <thead>
-        <tr class="allif-table-header-row">
-        <td>Company</td>
-        <td>Phone</td>
-        <td>Address</td>
-        </tr>
-        </thead>
-        <tbody class="allif-table-body">
-        
-        <tr>
-        <td>
-          
-          <a class="allif-table-links" href="{% url 'allifmaalcommonapp:commonCompanyDetailsForAllifAdmin' clicked_row_data.id user_var glblslug %}">
-          {{clicked_row_data.company}}
-          </a>
-        </td>
-        <td>{{clicked_row_data.phone1}}</td>
-        <td>{{clicked_row_data.address}}</td>
-      </tr>
-     
-      </tbody>
-    </table>
-    </div>
-   </div>
 
-</div><!--end....table column-->
-
-</div><!--end....table row-->
-  {% endif %}
 <div class="row mt-12"> <!--start....table row-->
   <div class="col-md-12"> <!--start....table column-->
   <div class="allif-scroll-table">
@@ -155,10 +101,10 @@
       <thead>
         <tr class="allif-table-header-row">
         <td class="allif-fix-table-col">Company Name</td>
-        <td>Compnay Sector</td>
-        <td>Company Owner</td>
-        <td>Company Email Address</td>
-       
+        <td>Compnay Category</td>
+        <td>Vote</td>
+        <td>Votes Gained</td>
+        
         <td>Navigate</td>
         
         <td> . . . </td>
@@ -170,22 +116,24 @@
         
         {% for item in allifqueryset %} 
         <tr data-id="{{item.id}}">
-        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'allifmaalcommonapp:commonShowClickedRowCompanyDetails' item.id user_var glblslug %}">{{item.company}}</a></td>
+        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:editCompany' item.id %}">{{item.name}}</a></td>
        
         <td>
-          {{item.sector}}
+          {{item.category}}
         </td>
-        <td>{{item.owner}}</td>
+        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">Vote</a></td>
+       
         
-        <td>{{item.email}}</td>
-     
+        <td>
+          {{item.votes}}
         </td>
         <td>
           <div class="dropdown allifmaal-content-dropdown">
             <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Actions</a>
             <div class="dropdown-content">
-              <a href="{% url 'allifmaalcommonapp:commonCompanyDetailsForAllifAdmin' item.id user_var glblslug %}" class="dropdown-item" id="allif-table-drop-item-link">More Details</a>
-              <a href="" class="dropdown-item" id="allif-table-drop-item-link-delete">Block</a>
+              <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
+              
+              <a href="{% url 'awards:deleteCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Delete Item</a>
               
             </div>
           </div>

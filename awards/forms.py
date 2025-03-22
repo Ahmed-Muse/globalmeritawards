@@ -1,22 +1,33 @@
 from django import forms
 from loginapp.models import User
-from .models import Vote
+from .models import CategoriesModel,CompaniesModel,VotesModel
 
-class RegistrationForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-
+class CommonAddCategoryForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ('username', 'email', 'password')
+        model = CategoriesModel
+        fields = ['name','comments']
+        widgets={
+            'name':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+            'comments':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+        }
 
-class VoteForm(forms.ModelForm):
-    company = forms.ModelChoiceField(queryset=None)
-
-    def __init__(self, *args, **kwargs):
-        category = kwargs.pop('category')
-        super().__init__(*args, **kwargs)
-        self.fields['company'].queryset = Company.objects.filter(category=category)
-
+class CommonAddCompanyForm(forms.ModelForm):
     class Meta:
-        model = Vote
-        fields = ('company',)
+        model = CompaniesModel
+        fields = ['name','category','comments']
+        widgets={
+            'name':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+            'comments':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+            'category':forms.Select(attrs={'class':'form-control','placeholder':''}),
+        }
+class CommonAddVoteForm(forms.ModelForm):
+   
+    class Meta:
+        model = VotesModel
+        fields = ['voter','company','category']
+        widgets={
+            'voter':forms.Select(attrs={'class':'form-control','placeholder':''}),
+            'company':forms.Select(attrs={'class':'form-control','placeholder':''}),
+           
+        }
+

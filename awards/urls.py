@@ -5,8 +5,26 @@ app_name = 'awards'
 
 urlpatterns = [
     path('', views.gmaWebsite, name="gmaWebsite"),
-    path('register/', views.register, name='register'),
-    path('login/', views.user_login, name='login'),
-    path('logout/', views.user_logout, name='logout'),
+    path('Categories/', views.categories, name="categories"),
+    path('Add/New/Category/', views.addCategory, name="addCategory"),
+    path('Edit/This/Category/<int:pk>/Update/Details/', views.editCategory, name="editCategory"),
+    path('Delete/This/Category/<int:pk>/Permanently/', views.deleteCategory, name="deleteCategory"),
+
+    path('Companies/', views.companies, name="companies"),
+    path('Add/New/Company/', views.addCompany, name="addCompany"),
+    path('Edit/This/Company/<int:pk>/Update/Details/', views.editCompany, name="editCompany"),
+    path('Delete/This/Company/<int:pk>/Permanently/4ever/', views.deleteCompany, name="deleteCompany"),
+    path('Vote/For/This/Company/<int:pk>/U/Codey/', views.voteForCompany, name="voteForCompany"),
+
+    
+
+    path('Votes/', views.votes, name="votes"),
+    path('Add/New/Votes/', views.addVote, name="addVote"),
+    path('Delete/This/Vote/<int:pk>/Permanently/4ever/', views.deleteVote, name="deleteVote"),
+
+    path('Vote/This/Cat/<int:pk>/', views.votecategory, name="votecategory"),
+
+    
+
     path('vote/', views.vote, name='vote'),
 ]

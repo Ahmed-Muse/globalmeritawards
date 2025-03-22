@@ -44,7 +44,7 @@ def userLoginPage(request):
     try:
         title="User Login Page"
         if request.user.is_authenticated:
-            return redirect("awards:vote")
+            return redirect("awards:categories")
         else:
             form=CustomUserLoginForm()#nthis form is not used...normally html form is used instead in this case.
             if request.method=='POST':
@@ -57,14 +57,14 @@ def userLoginPage(request):
                         usrslg="allifmaal2116e7b104a5d8e7kkjfsjh6rewr#fdskjengltd"
                         if user is not None:#if there is an authenticated user
                             login(request, user)
-                            return redirect('awards:vote')
+                            return redirect('awards:categories')
                         else:
                             messages.info(request,'Sorry! your email or password is incorrect!')
                             form=CustomUserLoginForm()
                     else:
                         if user is not None:#if there is an authenticated user
                             login(request, user)
-                            return redirect('awards:vote')
+                            return redirect('awards:categories')
                         else:
                             messages.info(request,'Sorry! your email or password is incorrect!')
                             form=CustomUserLoginForm()
