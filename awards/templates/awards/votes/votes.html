@@ -52,14 +52,12 @@
         
         {% for item in allifqueryset %} 
         <tr data-id="{{item.id}}">
-        <td class="allif-fix-table-col"><a class="allif-table-links" href="">{{item.name}}</a></td>
+        <td class="allif-fix-table-col"><a class="allif-table-links" href="">{{item.voter}}</a></td>
        
-        <td>
-          {{item.sector}}
-        </td>
+        
         <td>{{item.company}}</td>
         
-        <td>{{item.email}}</td>
+        <td>{{item.company.category}}</td>
      
         </td>
         <td>

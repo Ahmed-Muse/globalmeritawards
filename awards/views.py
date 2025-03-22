@@ -262,19 +262,30 @@ def votecategory(request,pk):
     if VotesModel.objects.filter(voter=request.user, category=category).exists():
         messages.error(request, "You have already voted in this category.")
         return redirect('awards:categories')
+    print("before post")
 
     if request.method == 'POST':
         form = CommonAddVoteForm(request.POST)
         if form.is_valid():
+            company_id=int(request.POST.get('company'))
             vote = form.save(commit=False)
             vote.user = request.user
             vote.category = category
             vote.save()
+            cmpny=CompaniesModel.objects.filter(id=company_id).first()
+            initial_votes=cmpny.votes
+            cmpny.votes=initial_votes+1
+            cmpny.save()
+
             messages.success(request, "Your vote has been recorded.")
             return redirect('awards:categories')
+        else:
+            print("not valid")
     else:
+        print("after post")
         form = CommonAddVoteForm()
         form.fields['company'].queryset = CompaniesModel.objects.filter(category=category)
+
         context={
             'form': form, 'category': category
 
