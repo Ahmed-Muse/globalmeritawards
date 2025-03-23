@@ -6,9 +6,10 @@ from .forms import CommonAddCategoryForm,CommonAddCompanyForm,CommonAddVoteForm
 from .models import CategoriesModel,CompaniesModel,VotesModel
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
-
+from loginapp.decorators import allifmaal_admin_supperuser,logged_in_user_is_owner_ceo,logged_in_user_can_add,logged_in_user_can_view,logged_in_user_can_edit,logged_in_user_can_delete,logged_in_user_is_admin
 from django.contrib import messages
 
+@allifmaal_admin_supperuser
 def gmaWebsite(request):
     try:
         title="Global Merit Awards"
@@ -18,6 +19,7 @@ def gmaWebsite(request):
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
 
+@login_required(login_url='loginapp:userLoginPage')
 def categories(request):
     try:
         title="Main Categories"

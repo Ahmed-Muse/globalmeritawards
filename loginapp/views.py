@@ -3,7 +3,8 @@ from django.contrib import messages
 from .forms import CreateNewCustomUserForm,CustomUserLoginForm,UpdateCustomUserForm
 from django.contrib.auth import authenticate, login, logout#for login and logout- and authentication
 from loginapp.models import User
-
+from django.contrib.auth.decorators import login_required
+from .decorators import allifmaal_admin_supperuser,logged_in_user_is_owner_ceo,logged_in_user_can_add,logged_in_user_can_view,logged_in_user_can_edit,logged_in_user_can_delete,logged_in_user_is_admin
 # Create your views here.
 def newUserRegistration(request):
     try:
@@ -21,19 +22,11 @@ def newUserRegistration(request):
                     obj = form.save(commit=False)
                     obj.fullNames=str(f'{fname}+{lname}')#important...used to generate user slug
                     obj.save()
-                    newUser=User.objects.filter(email=obj).first()
-                    #if newUser!=None:
-                        #secret_key=newUser.customurlslug
-                        #context={"title":title,"form":form,"secret_key":secret_key,}
-                        #return render(request,"allifmaalusersapp/users/userkey.html",context)
-                    
-                    #else:
-                        #messages.info(request,f'User does not exist')
-                        #return redirect('allifmaalusersapp:newUserRegistration')
+                    return redirect("loginapp:userLoginPage")
+                  
                 else:
                     messages.info(request,f'Sorry {email} is likely taken, or passwords not match')
-               
-
+           
         context={"title":title,"form":form,}
         return render(request,"loginapp/users/user_registeration.html",context)
     except Exception as ex:
@@ -222,3 +215,75 @@ def userForgotPassowrd(request):#this requires the user to remember their email 
         error_context={'error_message': ex,}
         return render(request,'allifmaalusersapp/error/error.html',error_context)
 
+
+
+
+
+
+@login_required(login_url='loginapp:userLoginPage') 
+def commonUserCanAdd(request,pk,*allifargs,**allifkwargs):
+    try:
+        allifquery=User.objects.filter(id=pk).first()
+        user_var=request.user.usercompany
+        usrslg=request.user.customurlslug
+        if allifquery.can_add==True:
+            allifquery.can_add=False
+        else:
+            allifquery.can_add=True
+        allifquery.can_do_all=False
+        allifquery.save()
+        return redirect('allifmaalcommonapp:commonUserDetails',pk=allifquery.id,allifusr=usrslg,allifslug=user_var)
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'allifmaalcommonapp/error/error.html',error_context)
+
+@login_required(login_url='loginapp:userLoginPage') 
+def commonUserCanView(request,pk,*allifargs,**allifkwargs):
+    try:
+        allifquery=User.objects.filter(id=pk).first()
+        user_var=request.user.usercompany
+        usrslg=request.user.customurlslug
+        if allifquery.can_view==True:
+            allifquery.can_view=False
+        else:
+            allifquery.can_view=True
+        allifquery.can_do_all=False
+        allifquery.save()
+        return redirect('allifmaalcommonapp:commonUserDetails',pk=allifquery.id,allifusr=usrslg,allifslug=user_var)
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'allifmaalcommonapp/error/error.html',error_context)
+@login_required(login_url='loginapp:userLoginPage') 
+def commonUserCanEdit(request,pk,*allifargs,**allifkwargs):
+    try:
+        allifquery=User.objects.filter(id=pk).first()
+        user_var=request.user.usercompany
+        usrslg=request.user.customurlslug
+        if allifquery.can_edit==True:
+            allifquery.can_edit=False
+        else:
+            allifquery.can_edit=True
+        allifquery.can_do_all=False
+        allifquery.save()
+        return redirect('allifmaalcommonapp:commonUserDetails',pk=allifquery.id,allifusr=usrslg,allifslug=user_var)
+   
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'allifmaalcommonapp/error/error.html',error_context)
+    
+@login_required(login_url='loginapp:userLoginPage') 
+def commonUserCanDelete(request,pk,*allifargs,**allifkwargs):
+    try:
+        allifquery=User.objects.filter(id=pk).first()
+        user_var=request.user.usercompany
+        usrslg=request.user.customurlslug
+        if allifquery.can_delete==True:
+            allifquery.can_delete=False
+        else:
+            allifquery.can_delete=True
+        allifquery.can_do_all=False 
+        allifquery.save()
+        return redirect('allifmaalcommonapp:commonUserDetails',pk=allifquery.id,allifusr=usrslg,allifslug=user_var)
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'allifmaalcommonapp/error/error.html',error_context)
