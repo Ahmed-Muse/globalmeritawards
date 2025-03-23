@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import CommonAddCategoryForm,CommonAddCompanyForm,CommonAddVoteForm
 from .models import CategoriesModel,CompaniesModel,VotesModel
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 
 from django.contrib import messages
 
@@ -258,7 +259,8 @@ def deleteVote(request,pk):
     
 
 def votecategory(request,pk):
-    category = get_object_or_404(CategoriesModel, id=pk)
+    #category = get_object_or_404(CategoriesModel, id=pk)
+    category=CategoriesModel.objects.filter(id=pk).first()
     if VotesModel.objects.filter(voter=request.user, category=category).exists():
         messages.error(request, "You have already voted in this category.")
         return redirect('awards:categories')
@@ -270,7 +272,7 @@ def votecategory(request,pk):
             company_id=int(request.POST.get('company'))
             vote = form.save(commit=False)
             vote.user = request.user
-            vote.category = category
+            vote.category=category
             vote.save()
             cmpny=CompaniesModel.objects.filter(id=company_id).first()
             initial_votes=cmpny.votes
@@ -294,6 +296,21 @@ def votecategory(request,pk):
     return render(request,'awards/votes/add-vote-category.html',context)
 
     return render(request, 'votes/vote.html', {'form': form, 'category': category})
+
+@login_required
+def vote_viewcopilot(request):
+    categories = CategoriesModel.objects.all()
+    if request.method == "POST":
+        company_id = request.POST.get("company_id")
+        try:
+            company = CompaniesModel.objects.get(id=company_id)
+            vote = VotesModel(voter=request.user, company=company)
+            vote.save()
+            return redirect("success")  # Redirect after successful vote
+        except ValidationError as e:
+            return render(request, "voting/vote.html", {"categories": categories, "error": str(e)})
+
+    return render(request, "voting/vote.html", {"categories": categories})
 
 @login_required
 def vote(request):
