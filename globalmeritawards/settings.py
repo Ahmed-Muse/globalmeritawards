@@ -52,7 +52,7 @@ SECRET_KEY = 'django-insecure-$@($ofh@)3j5cly(5yo-b6+3r)7pg7flt&m-z+*kon)2)%q*#0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['globalmeritawards.pythonanywhere.com']
+ALLOWED_HOSTS = ['globalmeritawards.pythonanywhere.com','127.0.0.1','localhost','http://0.0.0.0:8000/']
 
 #SECRET_KEY =allif_get_env_var("ALLIF_DJANGO_SECRET_KEY")
 #EMAIL_BACKEND=allif_get_env_var("ALLIF_EMAIL_BACKEND","email-backend")
@@ -274,5 +274,4 @@ AUTH_USER_MODEL = 'loginapp.User'
 
 
 
-################################
 
