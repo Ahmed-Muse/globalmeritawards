@@ -1,0 +1,135 @@
+{% extends 'loginapp/base/uimainbase/allifmaaluibase.html'%}
+{% load humanize %}
+{% block title %}
+{{title}}
+{% endblock %}
+{% block style %}
+{%endblock%}
+{% block body %}
+
+<div class="allifmaincontainer">
+  <!--start....main headere-->
+<div class="card-header">
+  <div class="row mt-12" ><!--start....header row-->
+  <div class="col-md-12"><!--start....header column-->
+  <div class="container-fluid amel-content-header">
+    <div class="dropdown allifmaal-content-dropdown">
+      <a class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      Search
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <div class="content-dropdown-menu">
+        <li><a class="dropdown-item">Looking for something?</a></li>
+        <form method='POST' action="{% url 'loginapp:userSearch' %}">{% csrf_token %}
+          <input type="text" id="allifsearchcommonfield" name="allifsearchcommonfieldname" class="form-control allifsearchcommonfieldclasstwo"
+          placeholder="Type Here ...">
+          <button type="submit" class="btn allifmaal-submit-btn">Submit</button>
+          </form>
+        
+      </div>
+      </ul>
+    </div>
+    
+    <a class="amel-table-list-identifier">Registered Users:</a>
+    <a href="{% url 'awards:home' %}">Home</a>
+    <a href="{% url 'awards:companies' %}">Companies</a>
+    <a href="{% url 'awards:categories' %}">Categories</a>
+
+    <a href="{% url 'awards:votes' %}">Votes</a>
+  </div>
+    </div><!--end....header column-->
+    </div><!--end....header row-->
+  </div><!--end....main headere-->
+  <div class="allif-content-spacer"></div>
+<div class="row mt-12"> <!--start....table row-->
+  <div class="col-md-12"> <!--start....table column-->
+  <div class="allif-scroll-table">
+    <div class="table-responsive allif-full-table">
+    <table class="table table-layout">
+      <thead>
+        <tr class="allif-table-header-row">
+        <td class="allif-fix-table-col">First Name</td>
+        
+        <td>Last Name</td>
+        <td>User Email</td>
+        <td>User Role</td>
+        <td>Date</td>
+       
+        <td>Navigate</td>
+        
+        <td> . . . </td>
+        <td></td>
+        </tr>
+        </thead>
+        <tbody class="allif-table-body">
+         
+        
+        {% for item in allifqueryset %} 
+        <tr data-id="{{item.id}}">
+        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'loginapp:userDetails' item.id %}">{{item.first_name}}</a></td>
+        <td>{{item.last_name}}</td>
+        <td>{{item.email}}</td>
+        
+        <td>{{item.user_category}}</td>
+        
+        <td>{{item.date|date:'d/m/Y'}}</td>
+        <td>
+          <div class="dropdown allifmaal-content-dropdown">
+            <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
+            <div class="dropdown-content">
+              <a href="{% url 'loginapp:editUserDetailsByAdmin' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
+              <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
+              
+            </div>
+          </div>
+          <div class="dropdown allif-confirm-action">
+            
+            <a href="{% url 'loginapp:users' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
+            <a href="{% url 'loginapp:DeleteUserByAdmin' item.id %}" id="allif-confirm-delete">Confirm</a>
+          </div>
+
+         
+        </td>
+
+       <td> . . . </td>
+       <td></td>
+      </tr>
+      {% endfor %}
+      {% if searched_data %}
+    {% for item in searched_data %}
+    <tr>
+      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'loginapp:userDetails' item.id %}">{{item.first_name}}</a></td>
+      <td>{{item.email}}</td>
+      
+      <td>{{item.user_category}}</td>
+  
+    </tr>
+    {% endfor %}
+      {%endif %}
+      </tbody>
+    </table>
+    </div>
+   </div>
+
+</div><!--end....table column-->
+
+</div><!--end....table row-->
+
+
+</div>
+
+  {% block scripts %}
+ 
+  {% endblock %}
+  {% endblock %}
+
+
+
+
+
+
+
+
+
+
+

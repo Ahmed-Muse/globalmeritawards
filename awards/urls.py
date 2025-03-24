@@ -5,6 +5,9 @@ app_name = 'awards'
 
 urlpatterns = [
     path('', views.gmaWebsite, name="gmaWebsite"),
+    path('Allifmaal/Admin/Home/CC/', views.allifAdminHome, name="allifAdminHome"),
+    
+    path('home/', views.home, name="home"),
     path('Categories/', views.categories, name="categories"),
     path('Add/New/Category/', views.addCategory, name="addCategory"),
     path('Edit/This/Category/<int:pk>/Update/Details/', views.editCategory, name="editCategory"),

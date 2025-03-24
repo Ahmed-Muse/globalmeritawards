@@ -11,39 +11,23 @@
 <div class="allifmaal-side-nav-bar container-fluid" >
       
   <a class="side-nav-dropdown-btn nav-link dropdown-toggle navbar-brand" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-   GM Awards
+    {% if main_sbscrbr_entity != '' %} {{main_sbscrbr_entity|truncatewords:1}} {% else %} Menu {% endif %}
+  
   </a>
       
   <ul class="dropdown-menu allifmaal-side-nav-dropdown">
     <div class="amrullah-side-navbar">
-      <li><a class="dropdown-item" href="{% url 'awards:home' %}">Home</a></li>
-      <li><a class="dropdown-item" href="{% url 'loginapp:users' %}">Users</a></li>
-      <li><a class="dropdown-item" href="">Admin</a></li>
-     
+      <li><a class="dropdown-item" href="{% url 'awards:companies' %}">Categories</a></li>
+      <li><a class="dropdown-item" href="{% url 'awards:categories' %}">Categories</a></li>
       
-      <div class="btn-group">
-        <button class="side-nav-dropdown-btn dropdown-toggle " type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-        My Account
-        </button>
-        <ul class="dropdown-menu">
-          <div class="side-navbar-dropdown-menu">
-            <li><a class="dropdown-item" href="">Change email</a></li>
-          <li><a href="{% url 'loginapp:userLogoutPage' %}"class="dropdown-item">Logout</a></li>
-          
-          
-          </div>
-        </ul>
-      </div>
-      <li><a class="dropdown-item" href="">Customers</a></li>
-  
-  
+      
       <div class="btn-group">
         <button class="side-nav-dropdown-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
           Stocks
         </button>
         <ul class="dropdown-menu">
           <div class="side-navbar-dropdown-menu">
-          <li><a class="dropdown-item" href="">Inventory</a></li>
+          <li><a class="dropdown-item" href="{% url 'loginapp:changeYourUserPassword' %}">Change Pass</a></li>
           <li><a class="dropdown-item" href="">Suppliers</a></li>
          
           </div>
@@ -100,7 +84,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="">Customers</a></li>
-           
+            
           </ul>
     
         </li>

@@ -9,12 +9,31 @@ from django.core.exceptions import ValidationError
 from loginapp.decorators import allifmaal_admin_supperuser,logged_in_user_is_owner_ceo,logged_in_user_can_add,logged_in_user_can_view,logged_in_user_can_edit,logged_in_user_can_delete,logged_in_user_is_admin
 from django.contrib import messages
 
-@allifmaal_admin_supperuser
+
 def gmaWebsite(request):
     try:
         title="Global Merit Awards"
         context={"title":title,}
         return render(request,'awards/website/website.html',context)
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+    
+
+def allifAdminHome(request):
+    try:
+        title="Global Merit Awards"
+        context={"title":title,}
+        return render(request,'awards/home/allif-admin-home.html',context)
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+    
+def home(request):
+    try:
+        title="Global Merit Awards"
+        context={"title":title,}
+        return render(request,'awards/home/home.html',context)
     except Exception as ex:
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)

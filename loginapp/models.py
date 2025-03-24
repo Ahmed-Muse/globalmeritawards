@@ -35,6 +35,7 @@ class User(AbstractUser):# this is for creating new user... the fields are below
     can_edit=models.BooleanField('Can edit',default=False)
     can_view=models.BooleanField('Can view',default=False)
     can_delete=models.BooleanField('Can delete',default=False)
+    date=models.DateField(blank=True,null=True,auto_now_add=True)
     
     can_access_all=models.BooleanField('Can access all',default=False)
     can_access_related=models.BooleanField('Can access only related',default=False)
