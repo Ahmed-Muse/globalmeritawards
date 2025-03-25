@@ -24,12 +24,13 @@
   </a>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <div class="content-dropdown-menu">
-      <li><a class="dropdown-item" href="">Edit User</a></li>
-      
+      <li><a class="dropdown-item" href="{% url 'loginapp:editUserDetailsByAdmin' allifquery.id %}">Edit User</a></li>
+      <li><a class="dropdown-item" href="{% url 'loginapp:changeUserPasswordByAdmin' allifquery.id %}">Change Pass</a></li>
+
    </div>
   </ul>
 </div>
-<a href="">Home</a>
+<a href="{% url 'awards:home' %}">Home</a>
 
 
 </div>
@@ -61,30 +62,16 @@
        
       <tr>
         <td class="allif-fix-table-col">First Name</td>
-        <td>{{allifqueryset.title}}</td>
+        <td>{{allifquery.first_name}}</td>
     
         </tr>
-        <tr>
-          <td class="allif-fix-table-col">Middle Name</td>
-          <td> {{allifqueryset.middleName}}</td>
-      
-          </tr>
+       
           <tr>
             <td class="allif-fix-table-col">Last Name</td>
-            <td> {{allifqueryset.lastName}}</td>
+            <td> {{allifquery.last_name}}</td>
         
             </tr>
-            <tr>
-              <td class="allif-fix-table-col">Gender</td>
-              <td>{{allifqueryset.gender}}</td>
-          
-              </tr>
-              <tr>
-                <td class="allif-fix-table-col">Title</td>
-                <td>{{allifqueryset.title}}</td>
-            
-                </tr>
-               
+           
         </tbody>
         </table>
       </div>
@@ -97,33 +84,18 @@
        <div class="allif-details-card table-responsive">
        <table class="table table-layout">
         <tbody>
+          <tr>
+            <td class="allif-fix-table-col">Email</td>
+            <td>{{allifquery.email}}</td>
+        
+            </tr>
+            <tr>
+              <td class="allif-fix-table-col">User Role</td>
+              <td>{{allifquery.user_category}}</td>
           
-          <tr>
-            <td class="allif-fix-table-col">Education</td>
-            <td>{{allifqueryset.education}}</td>
-        
-            </tr>
-      <tr>
-        <td class="allif-fix-table-col">Department</td>
-        <td>{{allifqueryset.department}}</td>
-    
-        </tr>
-        <tr>
-          <td class="allif-fix-table-col">Username</td>
-          <td>{{allifqueryset.username.email}}</td>
-      
-          </tr>
-        <tr>
-          <td class="allif-fix-table-col">Category</td>
-          <td>{{allifqueryset.sysperms}}</td>
-      
-          </tr>
-          <tr>
-            <td class="allif-fix-table-col">Staff No.</td>
-            <td>{{allifqueryset.staffNo}}</td>
-        
-            </tr>
-           
+              </tr>
+             
+         
           </tbody>
           </table>
           </div>
@@ -136,35 +108,18 @@
        <!--start of the table here-->
        <table class="table table-layout">
         <tbody>
-
-        <tr>
-          <td class="allif-fix-table-col">Comments</td>
-          <td>{{allifqueryset.comment}}</td>
-      
-          </tr>
+         
           <tr>
-            <td class="allif-fix-table-col">Salary</td>
-            <td>{{allifqueryset.salary|floatformat:2|intcomma}}</td>
+            <td class="allif-fix-table-col">Date</td>
+            <td>{{allifquery.phone}}</td>
         
             </tr>
-            <tr>
-              <td class="allif-fix-table-col">Total Paid Salary</td>
-              <td>{{allifqueryset.total_salary_paid|floatformat:2|intcomma}}</td>
-          
-              </tr>
-
-              <tr>
-                <td class="allif-fix-table-col">Payable Salary</td>
-                <td>{{allifqueryset.salary_payable|floatformat:2|intcomma}}</td>
-            
-                </tr>
-                <tr>
-                  <td class="allif-fix-table-col">Salary Balance</td>
-                  <td>{{allifqueryset.salary_balance|floatformat:2|intcomma}}</td>
-              
-                  </tr>
-            
-            
+          <tr>
+            <td class="allif-fix-table-col">Date</td>
+            <td>{{allifquery.date|date:'d/m/Y'}}</td>
+        
+            </tr>
+      
           </tbody>
           </table>
   </div>
@@ -178,35 +133,6 @@
 <!--end of table-->
 
 </div><!--end of main container of the page....-->
-
-<div class="row mt-12"> <!--start....table row-->
-  <div class="col-md-12"> <!--start....table column-->
-  <div class="allif-scroll-table">
-    <div class="table-responsive allif-full-table">
-    <table class="table table-layout">
-      <thead>
-        <tr class="allif-table-header-row">
-        <td>Company</td>
-        <td>Phone</td>
-        <td>Address</td>
-        </tr>
-        </thead>
-        <tbody class="allif-table-body">
-        
-        <tr>
-        <td>{{allifqueryset.company}}</td>
-        <td>{{allifqueryset.company.phone1}}</td>
-        <td>{{allifqueryset.company.address}}</td>
-      </tr>
-     
-      </tbody>
-    </table>
-    </div>
-   </div>
-
-</div><!--end....table column-->
-
-</div><!--end....table row-->
 
 
 <div class="row mt-12"> <!--start....table row-->

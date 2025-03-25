@@ -97,12 +97,34 @@
       {% endfor %}
       {% if searched_data %}
     {% for item in searched_data %}
-    <tr>
+    <tr data-id="{{item.id}}">
       <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'loginapp:userDetails' item.id %}">{{item.first_name}}</a></td>
+      <td>{{item.last_name}}</td>
       <td>{{item.email}}</td>
       
       <td>{{item.user_category}}</td>
-  
+      
+      <td>{{item.date|date:'d/m/Y'}}</td>
+      <td>
+        <div class="dropdown allifmaal-content-dropdown">
+          <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
+          <div class="dropdown-content">
+            <a href="{% url 'loginapp:editUserDetailsByAdmin' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
+            <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
+            
+          </div>
+        </div>
+        <div class="dropdown allif-confirm-action">
+          
+          <a href="{% url 'loginapp:users' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
+          <a href="{% url 'loginapp:DeleteUserByAdmin' item.id %}" id="allif-confirm-delete">Confirm</a>
+        </div>
+
+       
+      </td>
+
+     <td> . . . </td>
+     <td></td>
     </tr>
     {% endfor %}
       {%endif %}

@@ -15,64 +15,17 @@
   <div class="container-fluid amel-content-header">
     <div class="dropdown allifmaal-content-dropdown">
       <a class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-      Open Filters
+      Search
       </a>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <div class="content-dropdown-menu">
-  
         <li><a class="dropdown-item">Looking for something?</a></li>
         <form method='POST' action="">{% csrf_token %}
-        
           <input type="text" id="allifsearchcommonfield" name="allifsearchcommonfieldname" class="form-control allifsearchcommonfieldclasstwo"
           placeholder="Type Here ...">
-        
           <button type="submit" class="btn allifmaal-submit-btn">Submit</button>
           </form>
-          <hr>
-          <li><a class="dropdown-item">Select Ordering Option</a></li>
-        <form method='POST' action="" enctype="multipart/form-data">{% csrf_token %}
-      
-        <div>
-        <select name="requiredformat" class="form-control">
-          {% for item in datasorts %}
-          <option>{{item.name}}</option>
-            
-           {% endfor %}
-           
-          </select>
-          </div>
-          <button type="submit" class="btn allifmaal-submit-btn">Submit</button>
-      
-      </form>
-      <hr>
-      <li><a class="dropdown-item">Advanced Searching</a></li>
-      <form method='POST' action="" enctype="multipart/form-data">{% csrf_token %}
         
-        <div >
-          <label>Start Date</label>
-          <input type="date" class="form-control" name="strtdate" placeholder="Starting Date y-m-d">
-        </div>
-        <div >
-          <label >End Date</label>
-          <input type="date" class="form-control" name="enddate" placeholder="Ending Date y-m-d">
-        </div>
-        
-        <div >
-          <label >Select Option</label>
-          <select name="requiredformat" class="form-control">
-            {% for item in formats %}
-            <option>{{item.name}}</option>
-            
-         {% endfor %}
-         
-        </select>
-        </div>
-  
-        
-        <button type="submit" class="btn allifmaal-submit-btn">Submit</button>
-    
-    </form>
-    <hr>
       </div>
       </ul>
     </div>

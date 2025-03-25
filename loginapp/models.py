@@ -22,12 +22,6 @@ class User(AbstractUser):# this is for creating new user... the fields are below
     last_name= models.CharField(max_length=255, null=True,blank=False)
     REQUIRED_FIELDS = ['username','first_name','last_name'] # removes email from REQUIRED_FIELDS
     user_category= models.CharField(choices=user_level, default='guest', max_length=100,null=True,blank=True)
-    customurlslug= models.SlugField(max_length=500, unique=True, blank=True, null=True)
-    url_unique_id= models.CharField(null=True, blank=True, max_length=100)
-    usercompany= models.CharField(max_length=500, blank=True, null=True)
-    userdivision= models.CharField(max_length=500, blank=True, null=True)
-    userbranch= models.CharField(max_length=500, blank=True, null=True)
-    userdepartment= models.CharField(max_length=500, blank=True, null=True)
     fullNames= models.CharField(max_length=255, null=True,blank=True,default="User Full Names")
     phone=models.CharField(max_length=50,blank=True,null=True)
     can_do_all=models.BooleanField('Can do all',default=False)
@@ -43,14 +37,7 @@ class User(AbstractUser):# this is for creating new user... the fields are below
    
     def __str__(self):
         return str(self.first_name)#please dont change this unless very necessary....
-    def save(self, *args, **kwargs):
-        if self.url_unique_id is None:
-            self.url_unique_id=str(uuid4()).split('-')[4]
-            self.customurlslug = slugify('{} {}'.format(self.fullNames,self.url_unique_id))
-
-        self.customurlslug = slugify('{} {}'.format(self.fullNames,self.url_unique_id))
-        super(User, self).save(*args, **kwargs)
-        
+    
 class UserLoginDetailsModel(models.Model):#this is for the login
     username = models.CharField(max_length=255, null=True)
     password = models.CharField(max_length=255, null=True)

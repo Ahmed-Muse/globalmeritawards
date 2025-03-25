@@ -26,8 +26,9 @@ class UpdateCustomUserForm(forms.ModelForm):#this updates the user details...
     user_category=forms.Select()
     class Meta:
         model = User
-        fields = ['first_name', 'email','last_name','user_category','usercompany']
+        fields = ['first_name', 'email','last_name','user_category']
         widgets={
-             'user_category':forms.Select(attrs={'class':'form-control'}),
+             'user_category':forms.Select(attrs={'class':'form-control custom-field-class-for-seclect2'}),
            
         }
+        
