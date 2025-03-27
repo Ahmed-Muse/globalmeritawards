@@ -14,7 +14,7 @@ class CommonAddCategoryForm(forms.ModelForm):
 class CommonAddCompanyForm(forms.ModelForm):
     class Meta:
         model = CompaniesModel
-        fields = ['name','category','comments','votes']
+        fields = ['name','category','comments','votes','voter']
         widgets={
             'name':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
             'comments':forms.TextInput(attrs={'class':'form-control','placeholder':''}),

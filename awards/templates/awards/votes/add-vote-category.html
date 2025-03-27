@@ -34,7 +34,7 @@
   <div class="allifmaincontainer">
 
 <div class="row mt-12"> <!--start....table row-->
-  <div class="table-details-content-description">Add/Edit New Profile ...vote for {{category.name}}</div>
+  <div class="table-details-content-description">Vote for <strong>{{category}}</strong> Category</div>
   <form method='POST' action=''>{% csrf_token %}
   <div class="col-md-12"> <!--start....table column-->
   <div class="allif-scroll-table">
@@ -53,7 +53,6 @@
         <td>{{form.company}}</td>
     
         </tr>
-
         
        
         </tbody>
@@ -69,9 +68,21 @@
        <table class="table table-layout">
         <tbody>
             <tr>
-                <td class="allif-fix-table-col">Voter</td>
-                <td>{{form.voter}}</td>
+                
             
+              {% if form.errors %}
+        <ul class="errorlist">
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <li>{{ field.label }}: {{ error|escape }}</li>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
                 </tr>
               
           </tbody>

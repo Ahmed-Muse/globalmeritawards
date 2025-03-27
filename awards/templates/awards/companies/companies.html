@@ -20,7 +20,7 @@
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <div class="content-dropdown-menu">
         <li><a class="dropdown-item">Looking for something?</a></li>
-        <form method='POST' action="">{% csrf_token %}
+        <form method='POST' action="{% url 'awards:companySearch' %}">{% csrf_token %}
           <input type="text" id="allifsearchcommonfield" name="allifsearchcommonfieldname" class="form-control allifsearchcommonfieldclasstwo"
           placeholder="Type Here ...">
           <button type="submit" class="btn allifmaal-submit-btn">Submit</button>
@@ -76,10 +76,31 @@
         </td>
         <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">Vote</a></td>
        
-        
+        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">Vote For {{item.category}}</a></td>
         <td>
           {{item.votes}}
         </td>
+        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">Details</a></td>
+        
+        <td>
+          {% if item.voter != "None" %}
+          {{item.voter}}
+          {% endif %}
+        </td>
+        <td>
+         
+          <div class="form-check">
+            
+            {% if item.voter == request.user %}
+            <input class="form-check-input" type="checkbox" checked>
+           
+            {% endif %}
+            
+          </div>
+         
+        
+        </td>
+
         <td>
           <div class="dropdown allifmaal-content-dropdown">
             <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Actions</a>
@@ -107,22 +128,42 @@
     {% endfor %}
     {% if searched_data %}
     {% for item in searched_data %}
-    <tr>
-      <td >
-        <a href="{% url 'allifmaalcommonapp:commonCompanyDetails' item.id user_var glblslug %}" class="allif-table-links">
-       {{item.company}}
-        </a>
+    <tr data-id="{{item.id}}">
+      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:editCompany' item.id %}">{{item.name}}</a></td>
+     
+      <td>
+        {{item.category}}
+      </td>
+      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">Vote</a></td>
+     
+      
+      <td>
+        {{item.votes}}
       </td>
       <td>
-        {{item.sector}}
+        <div class="dropdown allifmaal-content-dropdown">
+          <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Actions</a>
+          <div class="dropdown-content">
+            <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
+            
+            <a href="{% url 'awards:deleteCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Delete Item</a>
+            
+          </div>
+        </div>
+        <div class="dropdown allif-confirm-action">
+          
+          <a href="" id="allif-confirm-delete">No</a><span><strong> | </strong></span>
+          <a href="" id="allif-confirm-delete">Confirm</a>
+        </div>
+
+       
       </td>
-      <td>{{item.owner}}</td>
-      
-      <td>{{item.email}}</td>
-   
-      </td>
-  
-    </tr>
+
+     <td> . . . </td>
+     <td></td>
+    
+
+  </tr>
     {% endfor %}
       {%endif %}
 

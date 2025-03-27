@@ -8,7 +8,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from loginapp.decorators import allifmaal_admin_supperuser,logged_in_user_is_owner_ceo,logged_in_user_can_add,logged_in_user_can_view,logged_in_user_can_edit,logged_in_user_can_delete,logged_in_user_is_admin
 from django.contrib import messages
-
+from django.db.models import Q
 
 def gmaWebsite(request):
     try:
@@ -41,8 +41,17 @@ def home(request):
 @login_required(login_url='loginapp:userLoginPage')
 def categories(request):
     try:
-        title="Main Categories"
+        title="Categories"
         allifqueryset=CategoriesModel.objects.all()
+        user=request.user
+        if user.is_superuser==True:
+            pass
+
+        elif user.user_category=="owner":
+            print("this is the owner")
+           
+        else:
+            pass
         context = {
             "title":title,
             "allifqueryset":allifqueryset,
@@ -53,6 +62,52 @@ def categories(request):
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
 
+@login_required(login_url='loginapp:userLoginPage')
+def categoryDetails(request,pk):
+    try:
+        title="Category Details"
+        allifquery=CategoriesModel.objects.filter(id=pk).first()
+        allifqueryset=CompaniesModel.objects.filter(category=allifquery)
+        for item in allifqueryset:
+            print(item.id,"company")
+            print(item.category.id,"category")
+        user=request.user
+        if user.is_superuser==True:
+            pass
+
+        elif user.user_category=="owner":
+            print("this is the owner")
+           
+        else:
+            pass
+        context = {
+            "title":title,
+            "allifquery":allifquery,
+            "allifqueryset":allifqueryset,
+        }
+        return render(request,'awards/categories/category-details.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+@login_required(login_url='loginapp:userLoginPage')
+def categorySearch(request):
+    try:
+        title="Search"
+        if request.method=='POST':
+            allifsearch=request.POST.get('allifsearchcommonfieldname')
+            searched_data=CategoriesModel.objects.filter((Q(name__icontains=allifsearch)))
+            context={
+            "title":title,
+            "allifsearch":allifsearch,
+            "searched_data":searched_data,
+        }
+        return render(request,'awards/categories/categories.html',context)
+       
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'loginapp/error/error.html',error_context)
 def addCategory(request):
     try:
         title="Add New Category"
@@ -116,19 +171,41 @@ def deleteCategory(request,pk):
 
 
 def companies(request):
-    try:
-        title="Main Categories"
+    #try:
+        title="Companies"
+        user=request.user
+        print(user,"logged in ")
         allifqueryset=CompaniesModel.objects.all()
+        for item in allifqueryset:
+            print(item.voter)
+          
         context = {
             "title":title,
             "allifqueryset":allifqueryset,
         }
         return render(request,'awards/companies/companies.html',context)
     
-    except Exception as ex:
+    #except Exception as ex:
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
 
+@login_required(login_url='loginapp:userLoginPage')
+def companySearch(request):
+    try:
+        title="Search"
+        if request.method=='POST':
+            allifsearch=request.POST.get('allifsearchcommonfieldname')
+            searched_data=CompaniesModel.objects.filter((Q(name__icontains=allifsearch)|Q(category__name__icontains=allifsearch)))
+            context={
+            "title":title,
+            "allifsearch":allifsearch,
+            "searched_data":searched_data,
+        }
+        return render(request,'awards/companies/companies.html',context)
+       
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'loginapp/error/error.html',error_context)
 def addCompany(request):
     try:
         title="Add New Company"
@@ -182,6 +259,26 @@ def editCompany(request,pk):
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
 
+@login_required(login_url='loginapp:userLoginPage')
+def companyDetails(request,pk):
+    try:
+        title="Company Details"
+        allifquery=CompaniesModel.objects.filter(id=pk).first()
+        
+      
+        allifqueryset=allifquery.voter.all()
+       
+        context = {
+            "title":title,
+            "allifquery":allifquery,
+            "allifquery":allifquery,
+            "allifqueryset":allifqueryset,
+        }
+        return render(request,'awards/companies/company-details.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
 def deleteCompany(request,pk):
     try:
         CompaniesModel.objects.filter(id=pk).first().delete()
@@ -281,42 +378,66 @@ def deleteVote(request,pk):
 
 def votecategory(request,pk):
     #category = get_object_or_404(CategoriesModel, id=pk)
+    title="Vote Here"
     category=CategoriesModel.objects.filter(id=pk).first()
     if VotesModel.objects.filter(voter=request.user, category=category).exists():
         messages.error(request, "You have already voted in this category.")
         return redirect('awards:categories')
     print("before post")
-
     if request.method == 'POST':
         form = CommonAddVoteForm(request.POST)
         if form.is_valid():
-            company_id=int(request.POST.get('company'))
+            company_id = form.cleaned_data['company'].id # get company id from cleaned data
             vote = form.save(commit=False)
-            vote.user = request.user
-            vote.category=category
-            vote.save()
-            cmpny=CompaniesModel.objects.filter(id=company_id).first()
-            initial_votes=cmpny.votes
-            cmpny.votes=initial_votes+1
-            cmpny.save()
+            vote.voter = request.user  # changed user to voter to match your model.
+            vote.category = category
+            company_obj = CompaniesModel.objects.filter(id=company_id).first()
+            if company_obj:
+                #company_obj.voter = request.user
+                #print(company_obj.voter,"mmmmmmmmmm")
+                
 
-            messages.success(request, "Your vote has been recorded.")
-            return redirect('awards:categories')
+                #print(f"Company object: {company_obj}")
+                #print(f"Request user: {request.user}")
+                company_obj.voter.add(request.user)
+                print(f"voters after add: {company_obj.voter.all()}")
+
+
+                #print(company_obj.voter,"kkkkkkkkkkk")
+                company_obj.save()
+                initial_votes = company_obj.votes
+                company_obj.votes = initial_votes + 1
+                company_obj.save()
+                vote.company = company_obj # add company to vote object
+                vote.save()
+
+                messages.success(request, "Your vote has been recorded.")
+                return redirect('awards:categories')
+            else:
+                messages.error(request, "Invalid company selected.")
+                return redirect('awards:categories')
         else:
-            print("not valid")
+            print("form is not valid")
+            form.fields['company'].queryset = CompaniesModel.objects.filter(category=category) #re-add the queryset.
+            context = {
+                'form': form,
+                'category': category,
+                "title": title,
+            }
+            return render(request, 'awards/votes/add-vote-category.html', context)
     else:
         print("after post")
         form = CommonAddVoteForm()
         form.fields['company'].queryset = CompaniesModel.objects.filter(category=category)
 
-        context={
-            'form': form, 'category': category
+    context = {
+        'form': form,
+        'category': category,
+        "title": title,
+    }
 
-        }
-    
-    return render(request,'awards/votes/add-vote-category.html',context)
+    return render(request, 'awards/votes/add-vote-category.html', context)
 
-    return render(request, 'votes/vote.html', {'form': form, 'category': category})
 
 @login_required
 def vote_viewcopilot(request):
