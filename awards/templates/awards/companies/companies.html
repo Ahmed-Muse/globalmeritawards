@@ -29,154 +29,157 @@
       </div>
       </ul>
     </div>
+    <a class="amel-table-list-identifier">Companies:</a>
+    {% if logged_user.is_superuser %}
+    <a href="{% url 'awards:allifAdminHome' %}">Admin Home</a>
+    {% elif logged_user.user_category == "owner" %}
+    <a href="{% url 'awards:home' %}">GMA Home</a>
+   
+    {% endif %}
     
     <a href="{% url 'awards:categories' %}">Categories</a>
-    <a href="{% url 'awards:addCompany' %}">New Company</a>
-    
+   
     <a href="{% url 'awards:companies' %}">Companies</a>
-    <a href="{% url 'awards:addCompany' %}">New Company</a>
-    <a href="{% url 'awards:votes' %}">Votes</a>
-
-
- 
+    
   </div>
     </div><!--end....header column-->
     </div><!--end....header row-->
   </div><!--end....main headere-->
   
-    <div class="allifmaincontainer">
 
-<div class="row mt-12"> <!--start....table row-->
-  <div class="col-md-12"> <!--start....table column-->
-  <div class="allif-scroll-table">
-    <div class="table-responsive allif-full-table">
-    <table class="table table-layout">
-      <thead>
-        <tr class="allif-table-header-row">
-        <td class="allif-fix-table-col">Company Name</td>
-        <td>Compnay Category</td>
-        <td>Vote</td>
-        <td>Votes Gained</td>
-        
-        <td>Navigate</td>
-        
-        <td> . . . </td>
-        <td></td>
-        </tr>
-        </thead>
-        <tbody class="allif-table-body">
-         
-        
-        {% for item in allifqueryset %} 
-        <tr data-id="{{item.id}}">
-        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:editCompany' item.id %}">{{item.name}}</a></td>
-       
-        <td>
-          {{item.category}}
-        </td>
-        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">Vote</a></td>
-       
-        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">Vote For {{item.category}}</a></td>
-        <td>
-          {{item.votes}}
-        </td>
-        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">Details</a></td>
-        
-        <td>
-          {% if item.voter != "None" %}
-          {{item.voter}}
-          {% endif %}
-        </td>
-        <td>
-         
-          <div class="form-check">
-            
-            {% if item.voter == request.user %}
-            <input class="form-check-input" type="checkbox" checked>
-           
-            {% endif %}
-            
-          </div>
-         
-        
-        </td>
 
-        <td>
-          <div class="dropdown allifmaal-content-dropdown">
-            <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Actions</a>
-            <div class="dropdown-content">
-              <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-              
-              <a href="{% url 'awards:deleteCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Delete Item</a>
-              
-            </div>
-          </div>
-          <div class="dropdown allif-confirm-action">
-            
-            <a href="" id="allif-confirm-delete">No</a><span><strong> | </strong></span>
-            <a href="" id="allif-confirm-delete">Confirm</a>
-          </div>
 
-         
-        </td>
-
-       <td> . . . </td>
-       <td></td>
+  <div class="allifmaincontainer">
       
-  
-    </tr>
-    {% endfor %}
-    {% if searched_data %}
-    {% for item in searched_data %}
-    <tr data-id="{{item.id}}">
-      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:editCompany' item.id %}">{{item.name}}</a></td>
-     
-      <td>
-        {{item.category}}
-      </td>
-      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">Vote</a></td>
-     
+ 
+    <div class="row mt-12"> <!--start....table row-->
       
-      <td>
-        {{item.votes}}
-      </td>
-      <td>
-        <div class="dropdown allifmaal-content-dropdown">
-          <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Actions</a>
-          <div class="dropdown-content">
-            <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-            
-            <a href="{% url 'awards:deleteCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Delete Item</a>
-            
-          </div>
-        </div>
-        <div class="dropdown allif-confirm-action">
-          
-          <a href="" id="allif-confirm-delete">No</a><span><strong> | </strong></span>
-          <a href="" id="allif-confirm-delete">Confirm</a>
-        </div>
-
-       
-      </td>
-
-     <td> . . . </td>
-     <td></td>
+      <div class="delete-confirmation-header">
+        {% if messages %}
     
+        {% for message in messages %}
+          {{message}}  <a href="{% url 'awards:companies' %}"> <strong> OK </strong></a>
+        {% endfor %}
+    
+        {% endif %}
+        
+      </div>
+    
+      <div class="col-md-12"> <!--start....table column-->
+      <div class="allif-scroll-table">
+        <div class="table-responsive allif-full-table">
+        <table class="table table-layout">
+          <thead>
+            <tr class="allif-table-header-row">
+            <td class="allif-fix-table-col">Company Name</td>
+            <td>Category</td>
+           
+            {% if user_is_admin_owner == True %}
+            <td>Votes Gained</td>
+              {% else %}
+             <td></td>
+              {% endif %}
 
-  </tr>
-    {% endfor %}
-      {%endif %}
-
-      </tbody>
-    </table>
-    </div>
-   </div>
-
-</div><!--end....table column-->
-
-</div><!--end....table row-->
-
-
+            <td>Vote For Company</td>
+            <td>Vote For Category</td>
+            <td>Navigate</td>
+            
+            <td> . . . </td>
+            <td></td>
+            </tr>
+            </thead>
+            <tbody class="allif-table-body">
+             
+            
+            {% for item in allifqueryset %} 
+            <tr data-id="{{item.id}}">
+              <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">{{item.name}}</a></td>
+             
+              <td>
+                {{item.category}}
+              </td>
+              {% if user_is_admin_owner == True %}
+              <td>{{item.votes}}</td>
+                {% else %}
+               <td></td>
+                {% endif %}
+             
+              <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">Vote for Company</a></td>
+             
+              <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">Vote For {{item.category}}</a></td>
+              
+             
+          
+            <td>
+              <div class="dropdown allifmaal-content-dropdown">
+                <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
+                <div class="dropdown-content">
+                  <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
+                  <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
+                  
+                </div>
+              </div>
+              <div class="dropdown allif-confirm-action">
+                
+                <a href="{% url 'awards:companies' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
+                <a href="{% url 'awards:deleteCompany' item.id %}" id="allif-confirm-delete">Confirm</a>
+              </div>
+    
+             
+            </td>
+    
+           <td> . . . </td>
+           <td></td>
+          
+      
+        </tr>
+        {% endfor %}
+        {% if searched_data %}
+        {% for item in searched_data %}
+        <tr data-id="{{item.id}}">
+          <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
+         
+          <td class="allif-fix-table-col">Vote For <a class="allif-table-links" href="{% url 'awards:votecategory' item.id %}">{{item.name}}</a></td>
+         
+          <td>
+              {{item.date|date:'d/m/Y'}}
+            </td>
+        
+          <td>
+            <div class="dropdown allifmaal-content-dropdown">
+              <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
+              <div class="dropdown-content">
+                <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
+                <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
+                
+              </div>
+            </div>
+            <div class="dropdown allif-confirm-action">
+              
+              <a href="{% url 'awards:companies' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
+              <a href="{% url 'awards:deleteCompany' item.id %}" id="allif-confirm-delete">Confirm</a>
+            </div>
+    
+           
+          </td>
+    
+         <td> . . . </td>
+         <td></td>
+        
+    
+      </tr>
+        {% endfor %}
+          {%endif %}
+    
+          </tbody>
+        </table>
+        </div>
+       </div>
+    
+    </div><!--end....table column-->
+    
+    </div><!--end....table row-->
+   
 </div>
 </div>
 

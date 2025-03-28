@@ -1,4 +1,4 @@
-{% extends 'awards/base/uimainbase/allifmaaluibase.html'%}
+{% extends 'awards/base/uimainbase/allifmaaluibase_public.html'%}
 {% load humanize %}
 {% block title %}
 {{title}}
@@ -18,9 +18,6 @@
 <div class="container-fluid amel-content-header">
 <a href="{% url 'awards:categories' %}">Categories</a>
 <a href="{% url 'awards:companies' %}">Companies</a>
-<a href="{% url 'awards:addCompany' %}">New Company</a>
-<a href="{% url 'awards:votes' %}">Votes</a>
-
 
 </div>
 
@@ -49,7 +46,7 @@
       <tbody>
      
       <tr>
-        <td class="allif-fix-table-col">Company Name</td>
+        <td class="allif-fix-table-col">Select Company</td>
         <td>{{form.company}}</td>
     
         </tr>
@@ -67,8 +64,15 @@
        <div class="allif-details-card table-responsive">
        <table class="table table-layout">
         <tbody>
+
+          <tr>
+            <td class="allif-fix-table-col">Reasons</td>
+            <td>{{form.reasons}}</td>
+        
+            </tr>
             <tr>
                 
+              
             
               {% if form.errors %}
         <ul class="errorlist">

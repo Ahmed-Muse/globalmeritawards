@@ -19,7 +19,6 @@
 
 <a href="{% url 'awards:categories' %}">Categories</a>
 <a href="{% url 'awards:companies' %}">Companies</a>
-<a href="{% url 'awards:votes' %}">Votes</a>
 
 </div>
 
@@ -33,7 +32,7 @@
   <div class="allifmaincontainer">
 
 <div class="row mt-12"> <!--start....table row-->
-  <div class="table-details-content-description">Add/Edit New Category</div>
+  <div class="table-details-content-description">Add/Edit Category</div>
   <form method='POST' action=''>{% csrf_token %}
   <div class="col-md-12"> <!--start....table column-->
   <div class="allif-scroll-table">

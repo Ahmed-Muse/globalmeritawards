@@ -60,7 +60,7 @@ def logged_in_user_is_admin(allif_param_func):
 def logged_in_user_is_owner_ceo(allif_param_func):
     def allif_wrapper_func(request,*args,**kwargs):
         usernme=request.user
-        if usernme.user_category=="owner" or usernme.user_category=="ceo":
+        if usernme.user_category=="owner" or usernme.user_category=="ceo" or usernme.is_superuser==True:
             return allif_param_func(request,*args,**kwargs)
         else:
             return render(request,'loginapp/permissions/no_permission.html')

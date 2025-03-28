@@ -23,14 +23,21 @@
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
     <div class="content-dropdown-menu">
     <li><a class="dropdown-item" href="{% url 'awards:editCategory' allifquery.id %}">Edit Category</a></li>
+    <li><a class="dropdown-item body-delete-link" href="{% url 'awards:deleteCategory' allifquery.id %}">Delete Category</a></li>
+
     
    </div>
   </ul>
 </div>
 
- 
-<a href="">Home</a>
- 
+{% if logged_user.is_superuser %}
+    <a href="{% url 'awards:allifAdminHome' %}">Admin Home</a>
+    {% elif logged_user.user_category == "owner" %}
+    <a href="{% url 'awards:home' %}">GMA Home</a>
+   
+    {% endif %}
+<a href="{% url 'awards:categories' %}">Categories</a>
+<a href="{% url 'awards:companies' %}">Companies</a>
 
 </div>
 
@@ -42,7 +49,7 @@
 
   <div class="allifmaincontainer">
 <div class="row mt-12"> <!--start....table row-->
-  <div class="table-details-content-description">{{allifquery}} Details</div>
+  <div class="table-details-content-description"> <strong>{{allifquery}}</strong> Category Details</div>
   <div class="col-md-12"> <!--start....table column-->
   <div class="allif-scroll-table">
     <div class="allif-info-tables">
@@ -55,35 +62,11 @@
       <table class="table table-layout">
       <tbody>
       <tr>
-        <td class="allif-fix-table-col">Company</td>
-        <td>{{allifquery.company}}</td>
+        <td class="allif-fix-table-col">Category</td>
+        <td>{{allifquery.name}}</td>
     
         </tr>
-        <tr>
-          <td class="allif-fix-table-col">Email</td>
-          <td>{{allifquery.email}}</td>
-      
-          </tr>
-          <tr>
-            <td class="allif-fix-table-col">Phone 1</td>
-            <td>{{allifquery.phone1}}</td>
-        
-            </tr>
-            <tr>
-              <td class="allif-fix-table-col">Phone 2</td>
-              <td>{{allifquery.phone2}}</td>
-          
-              </tr>
-              <tr>
-                <td class="allif-fix-table-col">City</td>
-                <td>{{allifquery.city}}</td>
-            
-                </tr>
-                <tr>
-                  <td class="allif-fix-table-col">Country</td>
-                  <td>{{allifquery.country}}</td>
-              
-                  </tr>
+       
         </tbody>
         </table>
       </div>
@@ -97,40 +80,13 @@
        <table class="table table-layout">
         <tbody>
           <tr>
-            <td class="allif-fix-table-col">Owner</td>
-            <td>{{allifquery.owner}}</td>
+            <td class="allif-fix-table-col">Comments</td>
+            <td>{{allifquery.comments}}</td>
         
             </tr>
-      <tr>
-        <td class="allif-fix-table-col">P.O.BOX</td>
-        <td>{{allifquery.pobox}}</td>
     
-        </tr>
-        <tr>
-          <td class="allif-fix-table-col">Website</td>
-          <td>{{allifquery.website}}</td>
-      
-          </tr>
-        <tr>
-          <td class="allif-fix-table-col">Address</td>
-          <td>{{allifquery.address}}</td>
-      
-          </tr>
-          <tr>
-            <td class="allif-fix-table-col">Sector</td>
-            <td>{{allifquery.sector}}</td>
-        
-            </tr>
-            <tr>
-              <td class="allif-fix-table-col">Date</td>
-              <td>{{allifquery.date|date:'d/m/Y'}}</td>
-          
-              </tr>
-              <tr>
-                <td class="allif-fix-table-col">Last Update</td>
-                <td>{{allifquery.updatedon|date:'d/m/Y'}}</td>
-            
-                </tr>
+           
+             
           </tbody>
           </table>
           </div>
@@ -143,26 +99,10 @@
        <!--start of the table here-->
        <table class="table table-layout">
         <tbody>
-        <tr>
-          <td class="allif-fix-table-col">UID</td>
-          <td>{{allifquery.companyuid}}</td>
-      
-          </tr>
           <tr>
-            <td class="allif-fix-table-col">Slug</td>
-            <td>{{allifquery.companyslug}}</td>
+            <td class="allif-fix-table-col">Date</td>
+            <td>{{allifquery.date|date:'d/m/Y'}}</td>
         
-            </tr>
-            <tr>
-              <td class="allif-fix-table-col">Logo</td>
-              <td>
-              {% if allifquery.logo %}
-              <a href="{{ allifquery.logo.url }}" class="btn btn-secondary allifanchorimge" target="_blank" >
-               <img src="{{allifquery.logo.url}}"  width="200" ></a>
-              {% else %}
-              <span class="text-muted">No Logo</span>
-              {% endif %}
-        </td>
             </tr>
           </tbody>
           </table>
@@ -178,66 +118,21 @@
 
 </div><!--end of main container of the page....-->
 
-
-
-<!--end of table-->
-
-<!--end of table-->
+{% if user_is_admin_owner == True %}
+<div class="table-details-content-description"> {{user_voting_status}}</div>
 <div class="row mt-12"> <!--start....table row-->
-  <div class="col-md-12"> <!--start....table column-->
+  <div class="col-md-6"> <!--start....table column-->
+    <div class="table-content-description"> <a href="" class="allif-table-links"> {{allifquery}} Companies <strong>{{companies_counter}}</strong></a> </div>
   <div class="allif-scroll-table">
     <div class="table-responsive allif-full-table">
     <table class="table table-layout">
       <thead>
         <tr class="allif-table-header-row">
-        <td>Company</td>
-        <td>Address</td>
-        <td>Phone</td>
-        <td>Email</td>
-       
-        </tr>
-        </thead>
-        <tbody class="allif-table-body">
-       
-        <tr>
-          <td>
-            <a href="" class="allif-table-links">
-           {{allifquery.company}}
-            </a>
-          </td>
-        <td>{{allifquery.address}}</td>
-        <td>{{allifquery.phone1}}</td>
-        <td>{{allifquery.email}}</td>
-       
-      </tr>
-      
-      </tbody>
-    </table>
-    </div>
-   </div>
-
-</div><!--end....table column-->
-
-</div><!--end....table row-->
-
-
-<div class="row mt-12"> <!--start....table row-->
-  <div class="col-md-12"> <!--start....table column-->
-    <div class="table-content-description"> <a href="" class="allif-table-links"> Scopes</a> </div>
-  <div class="allif-scroll-table">
-    <div class="table-responsive allif-full-table">
-    <table class="table table-layout">
-      <thead>
-        <tr class="allif-table-header-row">
-        <td class="allif-fix-table-col">Scope</td>
+        <td class="allif-fix-table-col">Company</td>
         
-        <td>Comments</td>
-        <td>Created By</td>
+        <td>Votes</td>
+        <td>Created On</td>
       
-        <td>Date</td>
-        <td>Navigate</td>
-        <td> . . . </td>
-        <td></td>
         </tr>
         </thead>
         <tbody class="allif-table-body">
@@ -245,36 +140,11 @@
         
         {% for item in allifqueryset %} 
         <tr data-id="{{item.id}}">
-        <td class="allif-fix-table-col"><a class="allif-table-links" href="">{{item.name}}</a></td>
-        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">Vote For {{item.name}}</a></td>
-        <td>{{item.owner}}</td>
+        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">{{item.name}}</a></td>
+       
+        <td>{{item.votes}}</td>
         <td>{{item.date|date:'d/m/Y'}}</td>
-       
-        
-        <td>
-          <div class="dropdown allifmaal-content-dropdown">
-            <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">{{open_link}}</a>
-            <div class="dropdown-content">
-              <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-              <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item </a>
-              
-            </div>
-          </div>
-          <div class="dropdown allif-confirm-action">
-            
-            <a href="{% url 'awards:companies' %}" id="allif-confirm-delete">No</a><span><strong> | </strong></span>
-            <a href="{% url 'awards:deleteCompany' item.id %}" id="allif-confirm-delete">Confirm</a>
-          </div>
-
-
-
-
-        </td>
-
       
-       
-       <td> . . . </td>
-       <td></td>
       </tr>
       {% endfor %}
       </tbody>
@@ -284,8 +154,79 @@
 
 </div><!--end....table column-->
 
+<div class="col-md-6"> <!--start....table column-->
+  <div class="table-content-description"> <a href="" class="allif-table-links"> {{allifquery}} Voters <strong>{{cat_voters_counter}}</strong></a> </div>
+<div class="allif-scroll-table">
+  <div class="table-responsive allif-full-table">
+  <table class="table table-layout">
+    <thead>
+      <tr class="allif-table-header-row">
+      <td class="allif-fix-table-col">First Name</td>
+      <td>Email</td>
+      <td>Voted On</td>
+     
+      </tr>
+      </thead>
+      <tbody class="allif-table-body">
+       
+      
+      {% for item in cat_voters %} 
+      <tr data-id="{{item.id}}">
+      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:voteDetails' item.id %}">{{item.first_name}}</a></td>
+      <td>{{item.email}}</td>
+      <td>{{item.date|date:'d/m/Y'}}</td>
+    
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+ </div>
+
+</div><!--end....table column-->
+
+</div><!--end....table row-->
+{% else %}
+
+<div class="table-details-content-description"> {{user_voting_status}}</div>
+<div class="row mt-12"> <!--start....table row-->
+  <div class="col-md-12"> <!--start....table column-->
+    <div class="table-content-description"> <a href="" class="allif-table-links"> {{allifquery}} Companies <strong>{{companies_counter}}</strong></a> </div>
+  <div class="allif-scroll-table">
+    <div class="table-responsive allif-full-table">
+    <table class="table table-layout">
+      <thead>
+        <tr class="allif-table-header-row">
+        <td class="allif-fix-table-col">Company</td>
+        
+        <td>Votes</td>
+        <td>Created On</td>
+      
+        </tr>
+        </thead>
+        <tbody class="allif-table-body">
+         
+        
+        {% for item in allifqueryset %} 
+        <tr data-id="{{item.id}}">
+        <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">{{item.name}}</a></td>
+       
+        <td>{{item.votes}}</td>
+        <td>{{item.date|date:'d/m/Y'}}</td>
+      
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+   </div>
+
+</div><!--end....table column-->
+
+
 </div><!--end....table row-->
 
+{% endif %}
 
 </div>
 </div>

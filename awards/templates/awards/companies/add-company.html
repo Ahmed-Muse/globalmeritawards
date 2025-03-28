@@ -34,7 +34,7 @@
   <div class="allifmaincontainer">
 
 <div class="row mt-12"> <!--start....table row-->
-  <div class="table-details-content-description">Add/Edit New Profile</div>
+  <div class="table-details-content-description">Add/Edit Company</div>
   <form method='POST' action=''>{% csrf_token %}
   <div class="col-md-12"> <!--start....table column-->
   <div class="allif-scroll-table">
@@ -49,10 +49,15 @@
       <tbody>
      
       <tr>
-        <td class="allif-fix-table-col">Company Name</td>
+        <td class="allif-fix-table-col">Name</td>
         <td>{{form.name}}</td>
     
         </tr>
+        <tr>
+          <td class="allif-fix-table-col">Comments</td>
+          <td>{{form.comments}}</td>
+      
+          </tr>
        
         </tbody>
         </table>
@@ -76,11 +81,7 @@
                   <td>{{form.votes}}</td>
               
                   </tr>
-                  <tr>
-                    <td class="allif-fix-table-col">Voters</td>
-                    <td>{{form.voter}}</td>
-                
-                    </tr>
+                 
               
           </tbody>
           </table>
@@ -94,9 +95,16 @@
        <!--start of the table here-->
        <table class="table table-layout">
         <tbody>
-         
+          
+          <tr>
+            <td class="allif-fix-table-col">Add Date</td>
+            <td>{{form.add_date}}</td>
+        
+            </tr>
+           
+        
             <tr>
-              <td class="allif-fix-table-col"></td>
+              <td class="allif-fix-table-col">Action</td>
               <td> <input type="submit" value='Save' class="btn btn-success allifmaal-submit-btn"></td>
           
               </tr>

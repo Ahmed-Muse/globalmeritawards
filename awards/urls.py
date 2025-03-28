@@ -33,6 +33,7 @@ urlpatterns = [
     path('Votes/', views.votes, name="votes"),
     path('Add/New/Votes/', views.addVote, name="addVote"),
     path('Delete/This/Vote/<int:pk>/Permanently/4ever/', views.deleteVote, name="deleteVote"),
+    path('Vote/Details/<int:pk>/', views.voteDetails, name="voteDetails"),
 
     path('Vote/This/Cat/<int:pk>/', views.votecategory, name="votecategory"),
 
