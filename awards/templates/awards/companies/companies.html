@@ -104,9 +104,9 @@
                <td></td>
                 {% endif %}
              
-              <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">Vote for Company</a></td>
+              <td class="allif-fix-table-col">Vote For <a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">{{item.name}}</a></td>
              
-              <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">Vote For {{item.category}}</a></td>
+              <td class="allif-fix-table-col">Vote For <a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">{{item.category}}</a></td>
               
              
           

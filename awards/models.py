@@ -6,7 +6,7 @@ class CategoriesModel(models.Model):
     name= models.CharField(max_length=30,blank=False,null=True)
     comments= models.CharField(null=True, blank=True, max_length=30)
     date=models.DateField(blank=True,null=True,auto_now_add=True)
-    voter= models.ManyToManyField(User,related_name='votercategories',null=True,blank=True)
+    voter= models.ManyToManyField(User,related_name='votercategories',blank=True)
    
     def __str__(self):
         return str(self.name)
@@ -29,8 +29,8 @@ class VotesModel(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     date=models.DateField(blank=True,null=True,auto_now_add=True)
     category = models.ForeignKey(CategoriesModel, on_delete=models.SET_NULL, related_name='categoriesvotes',null=True,blank=True)
-    class Meta:
-        unique_together = ('voter', 'category')  # Enforce one vote per catego
+    #class Meta:
+        #unique_together = ('voter', 'category')  # Enforce one vote per catego
     def __str__(self):
-        return f"{self.voter.username} voted for {self.company.name} in {self.voter.username}"
+        return f"{self.voter.email} voted for {self.company.name} in {self.category}"
     
