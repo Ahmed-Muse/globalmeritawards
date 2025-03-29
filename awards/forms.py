@@ -39,8 +39,9 @@ class CommonAddVoteForm(forms.ModelForm):
         fields = ['voter','company','category','reasons']
         widgets={
             'voter':forms.Select(attrs={'class':'form-control','placeholder':''}),
-            'company':forms.Select(attrs={'class':'form-control','placeholder':''}),
+            'company':forms.Select(attrs={'class':'form-control custom-field-class-for-seclect2','placeholder':''}),
             'reasons':forms.Textarea(attrs={'class':'form-control','placeholder':''}),
+            'category':forms.Select(attrs={'class':'form-control custom-field-class-for-seclect2','placeholder':''}),
            
         }
 

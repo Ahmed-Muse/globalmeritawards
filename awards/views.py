@@ -287,6 +287,7 @@ def companyDetails(request,pk):
         title="Company Details"
         allifquery=CompaniesModel.objects.filter(id=pk).first()
         allifqueryset=allifquery.voter.all()
+       
         context = {
             "title":title,
             "allifquery":allifquery,
@@ -326,58 +327,7 @@ def votes(request):
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
     
-def addVote(request):
-    #try:
-        title="Add New Company"
-        categories = CategoriesModel.objects.all()
-        voted_categories = VotesModel.objects.filter(voter=request.user).values_list('category_id', flat=True)
-        form=CommonAddVoteForm()
-        forms = {}
-        errors = {}
-        for category in categories:
-            if category.id not in voted_categories:
-                if request.method == 'POST' and request.POST.get('category') == str(category.id):
-                    form = CommonAddVoteForm(request.POST, category=category)
-                    if form.is_valid():
-                        try:
-                            vote = form.save(commit=False)
-                            vote.user = request.user
-                            vote.category = category
-                            vote.save()
-                            return redirect('awards:vote')
-                        except IntegrityError:
-                            errors[category.name] = "You have already voted in this category."
-                    else:
-                        errors[category.name] = form.errors
-                else:
-                    form = CommonAddVoteForm()
-                forms[category.name] = form
 
-        #if request.method == 'POST':
-            #form=CommonAddVoteForm(request.POST or None)
-            #if form.is_valid():
-                #obj=form.save(commit=False)
-                #obj.owner =user_var
-                #obj.save()
-                #return redirect('awards:votes')
-            #else:
-                #form=CommonAddVoteForm()
-        #else:
-            #form=CommonAddVoteForm()
-        context = {
-            "title":title,
-            "form":form,
-            "voted_categories":voted_categories,
-            
-        }
-        return render(request,'awards/votes/add-vote.html',context)
-    
-    #except Exception as ex:
-        error_context={'error_message': ex,}
-        return render(request,'awards/error/error.html',error_context)
-
-
-    
 @login_required(login_url='loginapp:userLoginPage')
 def voteForCompany(request,pk):
     try:
@@ -400,10 +350,8 @@ def voteForCompany(request,pk):
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
 
-
-
-
-    
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo    
 def deleteVote(request,pk):
     try:
         VotesModel.objects.filter(id=pk).first().delete()
@@ -477,19 +425,16 @@ def votecategory(request,pk):
 
     return render(request, 'awards/votes/add-vote-category.html', context)
 
-
 @login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
 def voteDetails(request,pk):
     try:
         title="Company Details"
         allifquery=VotesModel.objects.filter(id=pk).first()
-        
-       
         context = {
             "title":title,
             "allifquery":allifquery,
             "allifquery":allifquery,
-            
         }
         return render(request,'awards/votes/vote-details.html',context)
     
@@ -497,70 +442,3 @@ def voteDetails(request,pk):
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
     
-@login_required
-def vote_viewcopilot(request):
-    categories = CategoriesModel.objects.all()
-    if request.method == "POST":
-        company_id = request.POST.get("company_id")
-        try:
-            company = CompaniesModel.objects.get(id=company_id)
-            vote = VotesModel(voter=request.user, company=company)
-            vote.save()
-            return redirect("success")  # Redirect after successful vote
-        except ValidationError as e:
-            return render(request, "voting/vote.html", {"categories": categories, "error": str(e)})
-
-    return render(request, "voting/vote.html", {"categories": categories})
-
-@login_required
-def vote(request):
-    categories = CategoriesModel.objects.all()
-    voted_categories = VotesModel.objects.filter(user=request.user).values_list('category_id', flat=True)
-    forms = {}
-    errors = {}
-
-    for category in categories:
-        if category.id not in voted_categories:
-            if request.method == 'POST' and request.POST.get('category') == str(category.id):
-                form =CommonAddVoteForm(request.POST, category=category)
-                if form.is_valid():
-                    try:
-                        vote = form.save(commit=False)
-                        vote.user = request.user
-                        vote.category = category
-                        vote.save()
-                        return redirect('awards:vote')
-                    except IntegrityError:
-                        errors[category.name] = "You have already voted in this category."
-                else:
-                    errors[category.name] = form.errors
-            else:
-                form = CommonAddVoteForm(category=category)
-            forms[category.name] = form
-    return render(request, 'awards/vote.html', {'forms': forms, 'voted_categories': voted_categories, 'errors': errors})
-
-
-
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-
-@login_required
-def voting(request):
-    categories = CategoriesModel.objects.all()
-    if request.method == 'POST':
-        for category in categories:
-            company_id = request.POST.get(f'category_{category.id}')
-            if company_id:
-                company = get_object_or_404(CompaniesModel, id=company_id)
-                vote, created = VotesModel.objects.get_or_create(
-                    voter=request.user,
-                    category=category,
-                    defaults={'company': company},
-                )
-                if not created:
-                    vote.company = company
-                    vote.save()
-        messages.success(request, "Your votes have been recorded!")
-        return redirect('vote')
-
-    return render(request, 'voting/vote.html', {'categories': categories})

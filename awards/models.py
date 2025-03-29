@@ -14,7 +14,7 @@ class CategoriesModel(models.Model):
 class CompaniesModel(models.Model):
     name= models.CharField(max_length=100,blank=False,null=True)
     category = models.ForeignKey(CategoriesModel, on_delete=models.PROTECT, related_name='categores',null=False,blank=False)
-    comments= models.CharField(null=True, blank=True, max_length=30)
+    comments= models.CharField(null=True, blank=True, max_length=30,default="No Comments")
     date=models.DateField(blank=True,null=True,auto_now_add=True)
     votes=models.DecimalField(max_digits=10,blank=True,null=True,decimal_places=1,default=0)
     voter= models.ManyToManyField(User,related_name='votersusers',null=True,blank=True)
@@ -32,5 +32,5 @@ class VotesModel(models.Model):
     #class Meta:
         #unique_together = ('voter', 'category')  # Enforce one vote per catego
     def __str__(self):
-        return f"{self.voter.email} voted for {self.company.name} in {self.category}"
+        return f"{self.voter} voted for {self.company.name} in {self.category}"
     
