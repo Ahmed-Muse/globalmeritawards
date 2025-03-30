@@ -1,4 +1,4 @@
-{% extends 'awards/base/uimainbase/allifmaaluibase.html'%}
+{% extends 'awards/base/uimainbase/allifmaaluibase_public.html'%}
 {% load humanize %}
 {% block title %}
 {{title}}
@@ -7,7 +7,7 @@
 {%endblock%}
 {% block body %}
 <div class="allifmaal-main-container">
- 
+
 <!--start....main headere-->
 <div class="card-header">
 
@@ -16,8 +16,21 @@
 <div class="col-md-12"><!--start....header column-->
 
 <div class="container-fluid amel-content-header">
+<div class="dropdown allifmaal-content-dropdown">
+  <a class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+  Actions
+  </a>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <div class="content-dropdown-menu">
+    <li><a class="dropdown-item" href="{% url 'awards:editSponsor' allifquery.id %}">Edit Item</a></li>
+    <li><a class="dropdown-item body-delete-link" href="{% url 'awards:deleteSponsor' allifquery.id %}">Delete Item</a></li>
+
+   </div>
+  </ul>
+</div>
 
 <a href="{% url 'awards:categories' %}">Categories</a>
+   
 <a href="{% url 'awards:companies' %}">Companies</a>
 
 </div>
@@ -28,12 +41,9 @@
 
 </div><!--end....main headere-->
 
-
   <div class="allifmaincontainer">
-
 <div class="row mt-12"> <!--start....table row-->
-  <div class="table-details-content-description">Add/Edit Sponsor</div>
-  <form method='POST' action=''>{% csrf_token %}
+  <div class="table-details-content-description">{{allifquery}} Details</div>
   <div class="col-md-12"> <!--start....table column-->
   <div class="allif-scroll-table">
     <div class="allif-info-tables">
@@ -45,19 +55,16 @@
       <div class="table-responsive">
       <table class="table table-layout">
       <tbody>
-     
       <tr>
-        <td class="allif-fix-table-col">Description</td>
-        <td>{{form.description}}</td>
+        <td class="allif-fix-table-col">Company</td>
+        <td>{{allifquery.name}}</td>
     
         </tr>
         <tr>
-            <td class="allif-fix-table-col">Amount</td>
-            <td>{{form.amount}}</td>
-        
-            </tr>
-       
-                   
+          <td class="allif-fix-table-col">Amount</td>
+          <td>{{allifquery.amount}}</td>
+      
+          </tr>
         </tbody>
         </table>
       </div>
@@ -70,19 +77,17 @@
        <div class="allif-details-card table-responsive">
        <table class="table table-layout">
         <tbody>
+          
             <tr>
-                <td class="allif-fix-table-col">Phone</td>
-                <td>{{form.phone}}</td>
+              <td class="allif-fix-table-col">Phone</td>
+              <td>{{allifquery.phone}}</td>
+          
+              </tr>
+              <tr>
+                <td class="allif-fix-table-col">Email</td>
+                <td>{{allifquery.email}}</td>
             
                 </tr>
-                <tr>
-                    <td class="allif-fix-table-col">Email</td>
-                    <td>{{form.email}}</td>
-                
-                    </tr>
-                   
-           
-                     
           </tbody>
           </table>
           </div>
@@ -97,17 +102,19 @@
         <tbody>
             <tr>
                 <td class="allif-fix-table-col">Comments</td>
-                <td>{{form.comments}}</td>
+                <td>{{allifquery.comments}}</td>
             
                 </tr>
-                
-            <tr>
-              <td class="allif-fix-table-col">Action</td>
-              <td> <input type="submit" value='Save' class="btn btn-success allifmaal-submit-btn"></td>
-          
-              </tr>
+        <tr>
+          <td class="allif-fix-table-col">Date</td>
+          <td>{{allifquery.date|date:'d/m/Y'}}</td>
+      
+          </tr>
+         
           </tbody>
           </table>
+
+          
   </div>
     </div>
     </div><!--end of row div --->
@@ -116,16 +123,20 @@
 
 </div><!--end....table row-->
 </div>
-</form>
 <!--end of table-->
 
 </div><!--end of main container of the page....-->
 
-</div>
 
+</div>
 </div>
   {% block scripts %}
 
   {% endblock %}
    {% endblock %}
    
+
+
+
+
+

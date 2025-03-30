@@ -26,10 +26,6 @@ urlpatterns = [
     path('Vote/For/This/Company/<int:pk>/U/Codey/', views.voteForCompany, name="voteForCompany"),
     path('Company/Details/<int:pk>/', views.companyDetails, name="companyDetails"),
 
-    
-
-    
-
     path('Votes/', views.votes, name="votes"),
     
     path('Delete/This/Vote/<int:pk>/Permanently/4ever/', views.deleteVote, name="deleteVote"),
@@ -37,5 +33,17 @@ urlpatterns = [
 
     path('Vote/This/Cat/<int:pk>/', views.votecategory, name="votecategory"),
 
+
+    path('gma/sponsors/', views.sponsors, name="sponsors"),
+    path('gma/add/sponsor', views.addSponsor, name="addSponsor"),
+    path('gma/edit/sponsor/details/<int:pk>/', views.editSponsor, name="editSponsor"),
+    path('GMA/Sponsor/Details/<int:pk>/', views.sponsorDetails, name="sponsorDetails"),
+    path('GMA/Delete/Sponsor/<int:pk>/', views.deleteSponsor, name="deleteSponsor"),
+
+    path('gma/expenses/', views.expenses, name="expenses"),
+    path('gma/add/expense', views.addExpense, name="addExpense"),
+    path('gma/edit/expense/details/<int:pk>/', views.editExpense, name="editExpense"),
+    path('GMA/Expense/Details/<int:pk>/', views.expenseDetails, name="expenseDetails"),
+    path('GMA/Delete/Expense/<int:pk>/', views.deleteExpense, name="deleteExpense"),
     
 ]

@@ -1,6 +1,6 @@
 from django import forms
 from loginapp.models import User
-from .models import CategoriesModel,CompaniesModel,VotesModel
+from .models import CategoriesModel,CompaniesModel,VotesModel,SponsorsModel,ExpensesModel
 
 
 ############################# start of datepicker customization ##############################
@@ -45,3 +45,27 @@ class CommonAddVoteForm(forms.ModelForm):
            
         }
 
+class AddSponsorForm(forms.ModelForm):
+    class Meta:
+        model = SponsorsModel
+        fields = ['name','amount','phone','email','comments']
+        widgets={
+            'name':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+            'amount':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+            'phone':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+            'email':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+            'comments':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+        }
+
+
+class AddExpenseForm(forms.ModelForm):
+   
+    class Meta:
+        model = ExpensesModel
+        fields = ['description','amount','comments']
+        widgets={
+            'description':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+            'amount':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+           
+            'comments':forms.TextInput(attrs={'class':'form-control','placeholder':''}),
+        }

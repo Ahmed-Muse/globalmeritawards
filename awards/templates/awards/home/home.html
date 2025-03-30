@@ -36,7 +36,7 @@
       <div class="col-md-4">
       <div class="card">
       <div class="card-header allif-dashboard-card-header">
-        Latest voters 
+        Latest Registerd Users
       </div>
   
       <div class="col-md-12">
@@ -48,48 +48,18 @@
       <table class="table table-layout">
         <thead>
           <tr class="allif-table-header-row">
-          <td>Category Name</td>
-         
+          <td>First Name</td>
           <td>Creation On</td>
-         
-          <td>Navigate</td>
-          
-          <td> . . . </td>
-          <td></td>
           </tr>
           </thead>
           <tbody class="allif-table-body">
-           
-          
           {% for item in allifqueryset %} 
           <tr data-id="{{item.id}}">
-          <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
+          <td><a class="allif-table-links" href="{% url 'loginapp:userDetails' item.id %}">{{item.first_name}}</a></td>
          
           <td>
               {{item.date|date:'d/m/Y'}}
             </td>
-        
-          <td>
-            <div class="dropdown allifmaal-content-dropdown">
-              <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-              <div class="dropdown-content">
-                <a href="{% url 'awards:editCategory' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-                <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
-                
-              </div>
-            </div>
-            <div class="dropdown allif-confirm-action">
-              
-              <a href="{% url 'awards:categories' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-              <a href="{% url 'awards:deleteCategory' item.id %}" id="allif-confirm-delete">Confirm</a>
-            </div>
-  
-           
-          </td>
-  
-         <td> . . . </td>
-         <td></td>
-        
     
       </tr>
       {% endfor %}
@@ -110,7 +80,7 @@
   <div class="col-md-4">
     <div class="card">
     <div class="card-header allif-dashboard-card-header">
-      Latest voters
+      Categories with highest votes
     </div>
 
     <div class="col-md-12">
@@ -123,48 +93,20 @@
       <thead>
         <tr class="allif-table-header-row">
         <td>Category Name</td>
-       
         <td>Creation On</td>
-       
-        <td>Navigate</td>
-        
-        <td> . . . </td>
-        <td></td>
         </tr>
         </thead>
         <tbody class="allif-table-body">
          
         
-        {% for item in allifqueryset %} 
+        {% for item in categories %} 
         <tr data-id="{{item.id}}">
         <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
        
         <td>
             {{item.date|date:'d/m/Y'}}
           </td>
-      
-        <td>
-          <div class="dropdown allifmaal-content-dropdown">
-            <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-            <div class="dropdown-content">
-              <a href="{% url 'awards:editCategory' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-              <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
-              
-            </div>
-          </div>
-          <div class="dropdown allif-confirm-action">
-            
-            <a href="{% url 'awards:categories' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-            <a href="{% url 'awards:deleteCategory' item.id %}" id="allif-confirm-delete">Confirm</a>
-          </div>
 
-         
-        </td>
-
-       <td> . . . </td>
-       <td></td>
-      
-  
     </tr>
     {% endfor %}
     
@@ -200,46 +142,20 @@
         <td>Category Name</td>
        
         <td>Creation On</td>
-       
-        <td>Navigate</td>
-        
-        <td> . . . </td>
-        <td></td>
+    
         </tr>
         </thead>
         <tbody class="allif-table-body">
          
         
-        {% for item in allifqueryset %} 
+        {% for item in companies %} 
         <tr data-id="{{item.id}}">
-        <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
+        <td><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">{{item.name}}</a></td>
        
         <td>
             {{item.date|date:'d/m/Y'}}
           </td>
       
-        <td>
-          <div class="dropdown allifmaal-content-dropdown">
-            <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-            <div class="dropdown-content">
-              <a href="{% url 'awards:editCategory' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-              <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
-              
-            </div>
-          </div>
-          <div class="dropdown allif-confirm-action">
-            
-            <a href="{% url 'awards:categories' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-            <a href="{% url 'awards:deleteCategory' item.id %}" id="allif-confirm-delete">Confirm</a>
-          </div>
-
-         
-        </td>
-
-       <td> . . . </td>
-       <td></td>
-      
-  
     </tr>
     {% endfor %}
     
@@ -267,7 +183,7 @@
     <div class="col-md-4">
         <div class="card">
         <div class="card-header allif-dashboard-card-header">
-          Latest voters
+          Gold Sponsors
         </div>
     
         <div class="col-md-12">
@@ -282,46 +198,21 @@
             <td>Category Name</td>
            
             <td>Creation On</td>
-           
-            <td>Navigate</td>
-            
-            <td> . . . </td>
-            <td></td>
+        
             </tr>
             </thead>
             <tbody class="allif-table-body">
              
             
-            {% for item in allifqueryset %} 
+            {% for item in sponsors %} 
             <tr data-id="{{item.id}}">
-            <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
+            <td><a class="allif-table-links" href="{% url 'awards:voteDetails' item.id %}">{{item.name}}</a></td>
            
             <td>
                 {{item.date|date:'d/m/Y'}}
               </td>
           
-            <td>
-              <div class="dropdown allifmaal-content-dropdown">
-                <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-                <div class="dropdown-content">
-                  <a href="{% url 'awards:editCategory' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-                  <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
-                  
-                </div>
-              </div>
-              <div class="dropdown allif-confirm-action">
-                
-                <a href="{% url 'awards:categories' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-                <a href="{% url 'awards:deleteCategory' item.id %}" id="allif-confirm-delete">Confirm</a>
-              </div>
-    
-             
-            </td>
-    
-           <td> . . . </td>
-           <td></td>
-          
-      
+           
         </tr>
         {% endfor %}
         
@@ -342,7 +233,7 @@
     <div class="col-md-4">
         <div class="card">
         <div class="card-header allif-dashboard-card-header">
-          Latest voters
+          Highest Expenses
         </div>
     
         <div class="col-md-12">
@@ -357,46 +248,21 @@
             <td>Category Name</td>
            
             <td>Creation On</td>
-           
-            <td>Navigate</td>
-            
-            <td> . . . </td>
-            <td></td>
+        
             </tr>
             </thead>
             <tbody class="allif-table-body">
              
             
-            {% for item in allifqueryset %} 
+            {% for item in expenses %} 
             <tr data-id="{{item.id}}">
-            <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
+            <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.description}}</a></td>
            
             <td>
                 {{item.date|date:'d/m/Y'}}
               </td>
           
-            <td>
-              <div class="dropdown allifmaal-content-dropdown">
-                <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-                <div class="dropdown-content">
-                  <a href="{% url 'awards:editCategory' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-                  <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
-                  
-                </div>
-              </div>
-              <div class="dropdown allif-confirm-action">
-                
-                <a href="{% url 'awards:categories' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-                <a href="{% url 'awards:deleteCategory' item.id %}" id="allif-confirm-delete">Confirm</a>
-              </div>
-    
-             
-            </td>
-    
-           <td> . . . </td>
-           <td></td>
-          
-      
+           
         </tr>
         {% endfor %}
         
@@ -416,7 +282,7 @@
     <div class="col-md-4">
         <div class="card">
         <div class="card-header allif-dashboard-card-header">
-          Latest voters
+          Votes
         </div>
     
         <div class="col-md-12">
@@ -431,46 +297,21 @@
             <td>Category Name</td>
            
             <td>Creation On</td>
-           
-            <td>Navigate</td>
-            
-            <td> . . . </td>
-            <td></td>
+         
             </tr>
             </thead>
             <tbody class="allif-table-body">
              
             
-            {% for item in allifqueryset %} 
+            {% for item in votes %} 
             <tr data-id="{{item.id}}">
-            <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
+            <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.voter}}</a></td>
            
             <td>
                 {{item.date|date:'d/m/Y'}}
               </td>
           
-            <td>
-              <div class="dropdown allifmaal-content-dropdown">
-                <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-                <div class="dropdown-content">
-                  <a href="{% url 'awards:editCategory' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-                  <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
-                  
-                </div>
-              </div>
-              <div class="dropdown allif-confirm-action">
-                
-                <a href="{% url 'awards:categories' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-                <a href="{% url 'awards:deleteCategory' item.id %}" id="allif-confirm-delete">Confirm</a>
-              </div>
-    
-             
-            </td>
-    
-           <td> . . . </td>
-           <td></td>
-          
-      
+           
         </tr>
         {% endfor %}
         

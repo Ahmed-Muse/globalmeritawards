@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import CommonAddCategoryForm,CommonAddCompanyForm,CommonAddVoteForm
-from .models import CategoriesModel,CompaniesModel,VotesModel
+from .forms import CommonAddCategoryForm,CommonAddCompanyForm,CommonAddVoteForm,AddExpenseForm,AddSponsorForm
+from .models import CategoriesModel,CompaniesModel,VotesModel,SponsorsModel,ExpensesModel
 from django.db import IntegrityError
 from django.core.exceptions import ValidationError
 from loginapp.decorators import allifmaal_admin_supperuser,logged_in_user_is_owner_ceo,logged_in_user_can_add,logged_in_user_can_view,logged_in_user_can_edit,logged_in_user_can_delete,logged_in_user_is_admin
 from django.contrib import messages
 from django.db.models import Q
+from loginapp.models import User
 
 def gmaWebsite(request):
     try:
@@ -35,9 +36,16 @@ def allifAdminHome(request):
 def home(request):
     try:
         logged_user=request.user
-        allifqueryset=CategoriesModel.objects.all()
+        allifqueryset=User.objects.all()
+        categories=CategoriesModel.objects.all().order_by('-votes')[:3]
+        companies=CompaniesModel.objects.all().order_by('-votes')[:3]
+        votes=VotesModel.objects.all()
+        sponsors=SponsorsModel.objects.all().order_by('-amount')[:3]
+        expenses=ExpensesModel.objects.all().order_by('-amount')[:3]
         title="Global Merit Awards"
-        context={"title":title,"logged_user":logged_user,"allifqueryset":allifqueryset,}
+        context={"title":title,"logged_user":logged_user,"allifqueryset":allifqueryset,
+                 "categories":categories,"companies":companies,"votes":votes,"expenses":expenses,
+                 "sponsors":sponsors,}
         return render(request,'awards/home/home.html',context)
     except Exception as ex:
         error_context={'error_message': ex,}
@@ -443,4 +451,192 @@ def voteDetails(request,pk):
     except Exception as ex:
         error_context={'error_message': ex,}
         return render(request,'awards/error/error.html',error_context)
+
+
+##############################33 suppliers section ###############3
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def sponsors(request):
+    try:
+        title="Sponsors"
+        allifqueryset=SponsorsModel.objects.all()
+        context = {
+            "title":title,
+            "allifqueryset":allifqueryset,
+        }
+        return render(request,'awards/sponsors/sponsors.html',context)
     
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+    
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def addSponsor(request):
+    try:
+        title="Add New Sponsor"
+        form=AddSponsorForm()
+        if request.method=='POST':
+            form=AddSponsorForm(request.POST)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.save()
+                return redirect('awards:sponsors')
+            else:
+                form=AddSponsorForm()
+        else:
+            form=AddSponsorForm()
+        context = {
+            "title":title,
+            "form":form,
+        }
+        return render(request,'awards/sponsors/add-sponsor.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+    
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def editSponsor(request,pk):
+    try:
+        title="Update Sponsor Details"
+        user_var_update=SponsorsModel.objects.filter(id=pk).first()
+        form=AddSponsorForm(instance=user_var_update)
+        if request.method=='POST':
+            form=AddSponsorForm(request.POST or None, instance=user_var_update)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.save()
+                return redirect('awards:sponsors')
+            else:
+                form=AddSponsorForm(instance=user_var_update)
+        else:
+            form=AddSponsorForm(instance=user_var_update)
+           
+        context={"title":title,"form":form,}
+        return render(request,'awards/sponsors/add-sponsor.html',context)
+       
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+    
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def sponsorDetails(request,pk):
+    try:
+        title="Sponsor Details"
+        allifquery=SponsorsModel.objects.filter(id=pk).first()
+        context={
+            "allifquery":allifquery,
+            "title":title,
+        }
+        return render(request,'awards/sponsors/sponsor-details.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def deleteSponsor(request,pk):
+    try:
+        SponsorsModel.objects.filter(id=pk).first().delete()
+        return redirect('awards:sponsors')
+       
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+
+##################33 expenses ####################3
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def expenses(request):
+    try:
+        title="Expenses"
+        allifqueryset=ExpensesModel.objects.all()
+        context = {
+            "title":title,
+            "allifqueryset":allifqueryset,
+        }
+        return render(request,'awards/expenses/expenses.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+    
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def addExpense(request):
+    try:
+        title="Add New Expense"
+        form=AddExpenseForm()
+        if request.method=='POST':
+            form=AddExpenseForm(request.POST)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.save()
+                return redirect('awards:expenses')
+            else:
+                form=AddExpenseForm()
+        else:
+            form=AddExpenseForm()
+        context = {
+            "title":title,
+            "form":form,
+        }
+        return render(request,'awards/expenses/add-expense.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+    
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def editExpense(request,pk):
+    try:
+        title="Update Expense Details"
+        user_var_update=ExpensesModel.objects.filter(id=pk).first()
+        form=AddExpenseForm(instance=user_var_update)
+        if request.method=='POST':
+            form=AddExpenseForm(request.POST or None, instance=user_var_update)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.save()
+                return redirect('awards:expenses')
+            else:
+                form=AddExpenseForm(instance=user_var_update)
+        else:
+            form=AddExpenseForm(instance=user_var_update)
+           
+        context={"title":title,"form":form,}
+        return render(request,'awards/expenses/add-expense.html',context)
+       
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+    
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def expenseDetails(request,pk):
+    try:
+        title="Expense Details"
+        allifquery=ExpensesModel.objects.filter(id=pk).first()
+        context={
+            "allifquery":allifquery,
+            "title":title,
+        }
+        return render(request,'awards/expenses/expense-details.html',context)
+    
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
+@login_required(login_url='loginapp:userLoginPage')
+@logged_in_user_is_owner_ceo
+def deleteExpense(request,pk):
+    try:
+        ExpensesModel.objects.filter(id=pk).first().delete()
+        return redirect('awards:expenses')
+       
+    except Exception as ex:
+        error_context={'error_message': ex,}
+        return render(request,'awards/error/error.html',error_context)
