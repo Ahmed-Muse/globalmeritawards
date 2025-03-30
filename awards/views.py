@@ -34,8 +34,10 @@ def allifAdminHome(request):
 @logged_in_user_is_owner_ceo    
 def home(request):
     try:
+        logged_user=request.user
+        allifqueryset=CategoriesModel.objects.all()
         title="Global Merit Awards"
-        context={"title":title,}
+        context={"title":title,"logged_user":logged_user,"allifqueryset":allifqueryset,}
         return render(request,'awards/home/home.html',context)
     except Exception as ex:
         error_context={'error_message': ex,}
