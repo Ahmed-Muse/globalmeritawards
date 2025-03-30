@@ -86,7 +86,7 @@ INSTALLED_APPS = [
     
     "django.contrib.humanize",
     #'crispy_forms',
-    'import_export',
+    #'import_export',
     
     
      'awards',
