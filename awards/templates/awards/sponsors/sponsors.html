@@ -64,7 +64,7 @@
     <table class="table table-layout">
       <thead>
         <tr class="allif-table-header-row">
-        <td class="allif-fix-table-col"> Name</td>
+        <td class="allif-fix-table-col">Sponsor Name</td>
         <td>Amount</td>
        
         <td>Date</td>
@@ -82,7 +82,7 @@
         <tr data-id="{{item.id}}">
         <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:sponsorDetails' item.id %}">{{item.name}}</a></td>
         <td>
-            {{item.amount}}
+            {{item.amount|floatformat:2|intcomma}}
           </td>
        
         <td>
@@ -116,9 +116,10 @@
     {% if searched_data %}
     {% for item in searched_data %}
     <tr data-id="{{item.id}}">
-      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
-     
-      <td class="allif-fix-table-col">Vote For <a class="allif-table-links" href="{% url 'awards:votecategory' item.id %}">{{item.name}}</a></td>
+      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:sponsorDetails' item.id %}">{{item.name}}</a></td>
+      <td>
+          {{item.amount|floatformat:2|intcomma}}
+        </td>
      
       <td>
           {{item.date|date:'d/m/Y'}}
@@ -128,15 +129,15 @@
         <div class="dropdown allifmaal-content-dropdown">
           <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
           <div class="dropdown-content">
-            <a href="{% url 'awards:editCategory' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
+            <a href="{% url 'awards:editSponsor' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
             <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
             
           </div>
         </div>
         <div class="dropdown allif-confirm-action">
           
-          <a href="{% url 'awards:categories' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-          <a href="{% url 'awards:deleteCategory' item.id %}" id="allif-confirm-delete">Confirm</a>
+          <a href="{% url 'awards:sponsors' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
+          <a href="{% url 'awards:deleteSponsor' item.id %}" id="allif-confirm-delete">Confirm</a>
         </div>
 
        

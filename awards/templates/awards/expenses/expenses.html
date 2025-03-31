@@ -13,24 +13,8 @@
   <div class="row mt-12" ><!--start....header row-->
   <div class="col-md-12"><!--start....header column-->
   <div class="container-fluid amel-content-header">
-    <div class="dropdown allifmaal-content-dropdown">
-      <a class="dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-      Search
-      </a>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <div class="content-dropdown-menu">
-        <li><a class="dropdown-item">Looking for something?</a></li>
-        <form method='POST' action="{% url 'awards:categorySearch' %}">{% csrf_token %}
-          <input type="text" id="allifsearchcommonfield" name="allifsearchcommonfieldname" class="form-control allifsearchcommonfieldclasstwo"
-          placeholder="Type Here ...">
-          <button type="submit" class="btn allifmaal-submit-btn">Submit</button>
-          </form>
-        
-      </div>
-      </ul>
-    </div>
-   
-    <a class="amel-table-list-identifier">Sponsors:</a>
+    
+    <a class="amel-table-list-identifier">Expenses:</a>
     <a href="{% url 'awards:expenses' %}">Expenses</a>
     <a href="{% url 'awards:addExpense' %}">Add Expense</a>
     <a href="{% url 'awards:categories' %}">Categories</a>
@@ -82,7 +66,7 @@
         <tr data-id="{{item.id}}">
         <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:expenseDetails' item.id %}">{{item.description}}</a></td>
         <td>
-            {{item.amount}}
+            {{item.amount|floatformat:2|intcomma}}
           </td>
        
         <td>
@@ -113,43 +97,7 @@
   
     </tr>
     {% endfor %}
-    {% if searched_data %}
-    {% for item in searched_data %}
-    <tr data-id="{{item.id}}">
-      <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
-     
-      <td class="allif-fix-table-col">Vote For <a class="allif-table-links" href="{% url 'awards:votecategory' item.id %}">{{item.name}}</a></td>
-     
-      <td>
-          {{item.date|date:'d/m/Y'}}
-        </td>
     
-      <td>
-        <div class="dropdown allifmaal-content-dropdown">
-          <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-          <div class="dropdown-content">
-            <a href="{% url 'awards:editCategory' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-            <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
-            
-          </div>
-        </div>
-        <div class="dropdown allif-confirm-action">
-          
-          <a href="{% url 'awards:categories' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-          <a href="{% url 'awards:deleteCategory' item.id %}" id="allif-confirm-delete">Confirm</a>
-        </div>
-
-       
-      </td>
-
-     <td> . . . </td>
-     <td></td>
-    
-
-  </tr>
-    {% endfor %}
-      {%endif %}
-
       </tbody>
     </table>
     </div>

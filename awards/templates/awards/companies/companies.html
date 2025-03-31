@@ -99,14 +99,14 @@
                 {{item.category}}
               </td>
               {% if user_is_admin_owner == True %}
-              <td>{{item.votes}}</td>
+              <td>{{item.votes|floatformat:2|intcomma}}</td>
                 {% else %}
                <td></td>
                 {% endif %}
              
-              <td class="allif-fix-table-col">Vote For <a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">{{item.name}}</a></td>
+              <td>Vote For <a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">{{item.name}}</a></td>
              
-              <td class="allif-fix-table-col">Vote For <a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">{{item.category}}</a></td>
+              <td>Vote For <a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">{{item.category}}</a></td>
               
              
           
@@ -137,37 +137,46 @@
         {% if searched_data %}
         {% for item in searched_data %}
         <tr data-id="{{item.id}}">
-          <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
-         
-          <td class="allif-fix-table-col">Vote For <a class="allif-table-links" href="{% url 'awards:votecategory' item.id %}">{{item.name}}</a></td>
+          <td class="allif-fix-table-col"><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">{{item.name}}</a></td>
          
           <td>
-              {{item.date|date:'d/m/Y'}}
-            </td>
-        
-          <td>
-            <div class="dropdown allifmaal-content-dropdown">
-              <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-              <div class="dropdown-content">
-                <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
-                <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
-                
-              </div>
-            </div>
-            <div class="dropdown allif-confirm-action">
-              
-              <a href="{% url 'awards:companies' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
-              <a href="{% url 'awards:deleteCompany' item.id %}" id="allif-confirm-delete">Confirm</a>
-            </div>
-    
-           
+            {{item.category}}
           </td>
-    
-         <td> . . . </td>
-         <td></td>
-        
-    
-      </tr>
+          {% if user_is_admin_owner == True %}
+          <td>{{item.votes|floatformat:2|intcomma}}</td>
+            {% else %}
+           <td></td>
+            {% endif %}
+         
+          <td>Vote For <a class="allif-table-links" href="{% url 'awards:voteForCompany' item.id %}">{{item.name}}</a></td>
+         
+          <td>Vote For <a class="allif-table-links" href="{% url 'awards:votecategory' item.category.id %}">{{item.category}}</a></td>
+          
+         
+      
+        <td>
+          <div class="dropdown allifmaal-content-dropdown">
+            <a href="#" onclick="showDropdown(event, this)" class="dropdown-toggle dropdown-item" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
+            <div class="dropdown-content">
+              <a href="{% url 'awards:editCompany' item.id %}" class="dropdown-item" id="allif-table-drop-item-link">Edit Item</a>
+              <a href="#" onclick="confirmDelete(this)" class="dropdown-item" id="allif-table-drop-item-link-delete">Delete Item</a>
+              
+            </div>
+          </div>
+          <div class="dropdown allif-confirm-action">
+            
+            <a href="{% url 'awards:companies' %}" id="allif-table-drop-item-link">No</a><span><strong> | </strong></span>
+            <a href="{% url 'awards:deleteCompany' item.id %}" id="allif-confirm-delete">Confirm</a>
+          </div>
+
+         
+        </td>
+
+       <td> . . . </td>
+       <td></td>
+      
+  
+    </tr>
         {% endfor %}
           {%endif %}
     

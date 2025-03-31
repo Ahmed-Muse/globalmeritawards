@@ -56,13 +56,13 @@
       <table class="table table-layout">
       <tbody>
       <tr>
-        <td class="allif-fix-table-col">Company</td>
+        <td class="allif-fix-table-col">Name</td>
         <td>{{allifquery.name}}</td>
     
         </tr>
         <tr>
           <td class="allif-fix-table-col">Amount</td>
-          <td>{{allifquery.amount}}</td>
+          <td>{{allifquery.amount|floatformat:2|intcomma}}</td>
       
           </tr>
         </tbody>

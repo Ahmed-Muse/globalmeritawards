@@ -24,8 +24,25 @@ def gmaWebsite(request):
 @allifmaal_admin_supperuser
 def allifAdminHome(request):
     try:
+        logged_user=request.user
+        categories=CategoriesModel.objects.all().order_by('-votes')[:2]
+        catcount=CategoriesModel.objects.all().count()
+        companies=CompaniesModel.objects.all().order_by('-votes')[:2]
+        compcount=CompaniesModel.objects.all().count()
+        sponsors=SponsorsModel.objects.all().order_by('-amount')[:2]
+        expenses=ExpensesModel.objects.all().order_by('-amount')[:2]
+        allifqueryset=User.objects.all().order_by('-castedvotes')[:2]
+        voterscount=User.objects.all().count()
+        votes=VotesModel.objects.all().order_by('-date')[:2]
+        votescount=VotesModel.objects.all().count()
+        expensescount=ExpensesModel.objects.all().count()
+        sponsorscount=SponsorsModel.objects.all().count()
+        
         title="Allifmaal Admin"
-        context={"title":title,}
+        context={"title":title,"logged_user":logged_user,"allifqueryset":allifqueryset,
+                 "categories":categories,"companies":companies,"votes":votes,"expenses":expenses,
+                 "sponsors":sponsors,"catcount":catcount,"compcount":compcount,"voterscount":voterscount,
+                 "votescount":votescount,"expensescount":expensescount,"sponsorscount":sponsorscount,}
         return render(request,'awards/home/allif-admin-home.html',context)
     except Exception as ex:
         error_context={'error_message': ex,}
@@ -36,16 +53,24 @@ def allifAdminHome(request):
 def home(request):
     try:
         logged_user=request.user
-        allifqueryset=User.objects.all()
-        categories=CategoriesModel.objects.all().order_by('-votes')[:3]
-        companies=CompaniesModel.objects.all().order_by('-votes')[:3]
-        votes=VotesModel.objects.all()
-        sponsors=SponsorsModel.objects.all().order_by('-amount')[:3]
-        expenses=ExpensesModel.objects.all().order_by('-amount')[:3]
+        categories=CategoriesModel.objects.all().order_by('-votes')[:2]
+        catcount=CategoriesModel.objects.all().count()
+        companies=CompaniesModel.objects.all().order_by('-votes')[:2]
+        compcount=CompaniesModel.objects.all().count()
+        sponsors=SponsorsModel.objects.all().order_by('-amount')[:2]
+        expenses=ExpensesModel.objects.all().order_by('-amount')[:2]
+        allifqueryset=User.objects.all().order_by('-castedvotes')[:2]
+        voterscount=User.objects.all().count()
+        votes=VotesModel.objects.all().order_by('-date')[:2]
+        votescount=VotesModel.objects.all().count()
+        expensescount=ExpensesModel.objects.all().count()
+        sponsorscount=SponsorsModel.objects.all().count()
+        
         title="Global Merit Awards"
         context={"title":title,"logged_user":logged_user,"allifqueryset":allifqueryset,
                  "categories":categories,"companies":companies,"votes":votes,"expenses":expenses,
-                 "sponsors":sponsors,}
+                 "sponsors":sponsors,"catcount":catcount,"compcount":compcount,"voterscount":voterscount,
+                 "votescount":votescount,"expensescount":expensescount,"sponsorscount":sponsorscount,}
         return render(request,'awards/home/home.html',context)
     except Exception as ex:
         error_context={'error_message': ex,}
@@ -342,7 +367,9 @@ def votes(request):
 def voteForCompany(request,pk):
     try:
         logged_user=request.user
-        allifquery=CompaniesModel.objects.get(id=pk)
+        user=User.objects.filter(email=request.user.email).first()
+       
+        allifquery=CompaniesModel.objects.filter(id=pk).first()
         if VotesModel.objects.filter(voter=request.user,category=allifquery.category).exists():
             messages.error(request, "You already voted in this Category. ")
             return redirect('awards:companies')
@@ -350,7 +377,14 @@ def voteForCompany(request,pk):
             try:
                 VotesModel.objects.create(company=allifquery,voter=logged_user,category=allifquery.category)
                 allifquery.votes += 1
+                
+                category=CategoriesModel.objects.filter(id=allifquery.category.id).first()
+                category.votes += 1
                 allifquery.save()
+                category.save()
+                user.castedvotes+=1
+                user.save()
+                
                 messages.success(request, "You voted successfully.")
                 return redirect('awards:companies')
             except Exception as e:
@@ -372,9 +406,9 @@ def deleteVote(request,pk):
     
 
 def votecategory(request,pk):
-    #category = get_object_or_404(CategoriesModel, id=pk)
     title="Vote Here"
     category=CategoriesModel.objects.filter(id=pk).first()
+    user=User.objects.filter(email=request.user.email).first()
     if VotesModel.objects.filter(voter=request.user, category=category).exists():
         messages.error(request, "You already voted in this Category. ")
         return redirect('awards:categories')
@@ -388,25 +422,17 @@ def votecategory(request,pk):
             vote.category = category
             company_obj = CompaniesModel.objects.filter(id=company_id).first()
             if company_obj:
-                #company_obj.voter = request.user
-                #print(company_obj.voter,"mmmmmmmmmm")
-                
-
-                #print(f"Company object: {company_obj}")
-                #print(f"Request user: {request.user}")
                 company_obj.voter.add(request.user)
-                print(f"voters after add: {company_obj.voter.all()}")
                 category.voter.add(request.user)
-
-
-                #print(company_obj.voter,"kkkkkkkkkkk")
                 company_obj.save()
+                category.votes += 1
+                company_obj.votes +=1
+                user.castedvotes+=1
                 category.save()
-                initial_votes = company_obj.votes
-                company_obj.votes = initial_votes + 1
                 company_obj.save()
                 vote.company = company_obj # add company to vote object
                 vote.save()
+                user.save()
 
                 messages.success(request, "Your vote has been recorded.")
                 return redirect('awards:categories')
@@ -439,7 +465,7 @@ def votecategory(request,pk):
 @logged_in_user_is_owner_ceo
 def voteDetails(request,pk):
     try:
-        title="Company Details"
+        title="Vote Details"
         allifquery=VotesModel.objects.filter(id=pk).first()
         context = {
             "title":title,

@@ -1577,3 +1577,15 @@
     color: var(--main-allifmaal-erp-font-color);
     font-family:system-ui,Helvetica, sans-serif;
   }
+
+  .allif-gma-web-body{
+    background-color: var(--main-background-color);
+  }
+
+    .allif-gma-web-general-content li{
+      
+      font-size: 1.2em;
+      margin-left: 1em;
+      margin-top: 0;
+
+    }

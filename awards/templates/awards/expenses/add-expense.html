@@ -16,7 +16,8 @@
 <div class="col-md-12"><!--start....header column-->
 
 <div class="container-fluid amel-content-header">
-
+  <a href="{% url 'awards:expenses' %}">Expenses</a>
+  <a href="{% url 'awards:addExpense' %}">Add Expense</a>
 <a href="{% url 'awards:categories' %}">Categories</a>
 <a href="{% url 'awards:companies' %}">Companies</a>
 
@@ -32,7 +33,7 @@
   <div class="allifmaincontainer">
 
 <div class="row mt-12"> <!--start....table row-->
-  <div class="table-details-content-description">Add/Edit Sponsor</div>
+  <div class="table-details-content-description">Add/Edit Expense</div>
   <form method='POST' action=''>{% csrf_token %}
   <div class="col-md-12"> <!--start....table column-->
   <div class="allif-scroll-table">
@@ -70,14 +71,10 @@
        <div class="allif-details-card table-responsive">
        <table class="table table-layout">
         <tbody>
-            <tr>
-                <td class="allif-fix-table-col">Phone</td>
-                <td>{{form.phone}}</td>
-            
-                </tr>
+           
                 <tr>
-                    <td class="allif-fix-table-col">Email</td>
-                    <td>{{form.email}}</td>
+                    <td class="allif-fix-table-col">Comments</td>
+                    <td>{{form.comments}}</td>
                 
                     </tr>
                    
@@ -95,12 +92,7 @@
        <!--start of the table here-->
        <table class="table table-layout">
         <tbody>
-            <tr>
-                <td class="allif-fix-table-col">Comments</td>
-                <td>{{form.comments}}</td>
-            
-                </tr>
-                
+          
             <tr>
               <td class="allif-fix-table-col">Action</td>
               <td> <input type="submit" value='Save' class="btn btn-success allifmaal-submit-btn"></td>

@@ -28,7 +28,8 @@
    </div>
   </ul>
 </div>
-
+<a href="{% url 'awards:expenses' %}">Expenses</a>
+<a href="{% url 'awards:addExpense' %}">Add Expense</a>
 <a href="{% url 'awards:categories' %}">Categories</a>
    
 <a href="{% url 'awards:companies' %}">Companies</a>
@@ -62,7 +63,7 @@
         </tr>
         <tr>
           <td class="allif-fix-table-col">Amount</td>
-          <td>{{allifquery.amount}}</td>
+          <td>{{allifquery.amount|floatformat:2|intcomma}}</td>
       
           </tr>
         </tbody>
@@ -79,15 +80,11 @@
         <tbody>
           
             <tr>
-              <td class="allif-fix-table-col">Phone</td>
-              <td>{{allifquery.phone}}</td>
+              <td class="allif-fix-table-col">Comments</td>
+              <td>{{allifquery.comments}}</td>
           
               </tr>
-              <tr>
-                <td class="allif-fix-table-col">Email</td>
-                <td>{{allifquery.email}}</td>
             
-                </tr>
           </tbody>
           </table>
           </div>
@@ -100,11 +97,7 @@
        <!--start of the table here-->
        <table class="table table-layout">
         <tbody>
-            <tr>
-                <td class="allif-fix-table-col">Comments</td>
-                <td>{{allifquery.comments}}</td>
-            
-                </tr>
+          
         <tr>
           <td class="allif-fix-table-col">Date</td>
           <td>{{allifquery.date|date:'d/m/Y'}}</td>

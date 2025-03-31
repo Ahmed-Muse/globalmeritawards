@@ -36,7 +36,7 @@
       <div class="col-md-4">
       <div class="card">
       <div class="card-header allif-dashboard-card-header">
-        Latest Registerd Users
+        Top 10 Categories. <span>Total: <strong>{{catcount}}</strong></span>
       </div>
   
       <div class="col-md-12">
@@ -48,18 +48,18 @@
       <table class="table table-layout">
         <thead>
           <tr class="allif-table-header-row">
-          <td>First Name</td>
-          <td>Creation On</td>
+          <td>Categories</td>
+          <td>Votes</td>
           </tr>
           </thead>
           <tbody class="allif-table-body">
-          {% for item in allifqueryset %} 
+          {% for item in categories %} 
           <tr data-id="{{item.id}}">
-          <td><a class="allif-table-links" href="{% url 'loginapp:userDetails' item.id %}">{{item.first_name}}</a></td>
-         
+          <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
           <td>
-              {{item.date|date:'d/m/Y'}}
-            </td>
+            {{item.votes|floatformat:2|intcomma}}
+          </td>
+         
     
       </tr>
       {% endfor %}
@@ -80,7 +80,7 @@
   <div class="col-md-4">
     <div class="card">
     <div class="card-header allif-dashboard-card-header">
-      Categories with highest votes
+      Top 10 Companies. <span>Total: <strong>{{compcount}}</strong></span>
     </div>
 
     <div class="col-md-12">
@@ -92,21 +92,20 @@
     <table class="table table-layout">
       <thead>
         <tr class="allif-table-header-row">
-        <td>Category Name</td>
-        <td>Creation On</td>
+        <td>Companies</td>
+        <td>Votes</td>
         </tr>
         </thead>
         <tbody class="allif-table-body">
          
         
-        {% for item in categories %} 
+        {% for item in companies %} 
         <tr data-id="{{item.id}}">
-        <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.name}}</a></td>
+        <td><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">{{item.name}}</a></td>
        
         <td>
-            {{item.date|date:'d/m/Y'}}
-          </td>
-
+          {{item.votes|floatformat:2|intcomma}}
+        </td>
     </tr>
     {% endfor %}
     
@@ -127,7 +126,7 @@
 <div class="col-md-4">
     <div class="card">
     <div class="card-header allif-dashboard-card-header">
-      Latest voters
+      Top 10 Voters. <span>Total: <strong>{{voterscount}}</strong></span>
     </div>
 
     <div class="col-md-12">
@@ -139,23 +138,22 @@
     <table class="table table-layout">
       <thead>
         <tr class="allif-table-header-row">
-        <td>Category Name</td>
+        <td>Name</td>
        
-        <td>Creation On</td>
+        <td>Votes</td>
     
         </tr>
         </thead>
         <tbody class="allif-table-body">
          
         
-        {% for item in companies %} 
+        {% for item in allifqueryset %} 
         <tr data-id="{{item.id}}">
-        <td><a class="allif-table-links" href="{% url 'awards:companyDetails' item.id %}">{{item.name}}</a></td>
+        <td><a class="allif-table-links" href="{% url 'loginapp:userDetails' item.id %}">{{item.first_name}}</a></td>
        
         <td>
-            {{item.date|date:'d/m/Y'}}
-          </td>
-      
+          {{item.castedvotes|floatformat:2|intcomma}}
+        </td>
     </tr>
     {% endfor %}
     
@@ -183,7 +181,7 @@
     <div class="col-md-4">
         <div class="card">
         <div class="card-header allif-dashboard-card-header">
-          Gold Sponsors
+          Top 10 Golden Sponsors. <span>Total: <strong>{{sponsorscount}}</strong></span>
         </div>
     
         <div class="col-md-12">
@@ -195,9 +193,9 @@
         <table class="table table-layout">
           <thead>
             <tr class="allif-table-header-row">
-            <td>Category Name</td>
+            <td>Sponsors</td>
            
-            <td>Creation On</td>
+            <td>Amounts</td>
         
             </tr>
             </thead>
@@ -206,13 +204,12 @@
             
             {% for item in sponsors %} 
             <tr data-id="{{item.id}}">
-            <td><a class="allif-table-links" href="{% url 'awards:voteDetails' item.id %}">{{item.name}}</a></td>
+            <td><a class="allif-table-links" href="{% url 'awards:sponsorDetails' item.id %}">{{item.name}}</a></td>
            
-            <td>
-                {{item.date|date:'d/m/Y'}}
-              </td>
-          
            
+        <td>
+          {{item.amount|floatformat:2|intcomma}}
+        </td>
         </tr>
         {% endfor %}
         
@@ -233,7 +230,7 @@
     <div class="col-md-4">
         <div class="card">
         <div class="card-header allif-dashboard-card-header">
-          Highest Expenses
+          Top 10 Highest Expenses. <span>Total: <strong>{{expensescount}}</strong></span>
         </div>
     
         <div class="col-md-12">
@@ -245,9 +242,9 @@
         <table class="table table-layout">
           <thead>
             <tr class="allif-table-header-row">
-            <td>Category Name</td>
+            <td>Description</td>
            
-            <td>Creation On</td>
+            <td>Amount</td>
         
             </tr>
             </thead>
@@ -256,13 +253,11 @@
             
             {% for item in expenses %} 
             <tr data-id="{{item.id}}">
-            <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.description}}</a></td>
-           
-            <td>
-                {{item.date|date:'d/m/Y'}}
-              </td>
-          
-           
+            <td><a class="allif-table-links" href="{% url 'awards:expenseDetails' item.id %}">{{item.description}}</a></td>
+              
+        <td>
+          {{item.amount|floatformat:2|intcomma}}
+        </td>
         </tr>
         {% endfor %}
         
@@ -282,7 +277,7 @@
     <div class="col-md-4">
         <div class="card">
         <div class="card-header allif-dashboard-card-header">
-          Votes
+          10 Latest Votes. <span>Total: <strong>{{votescount}}</strong></span>
         </div>
     
         <div class="col-md-12">
@@ -294,9 +289,9 @@
         <table class="table table-layout">
           <thead>
             <tr class="allif-table-header-row">
-            <td>Category Name</td>
+            <td>Voter</td>
            
-            <td>Creation On</td>
+            <td>Date</td>
          
             </tr>
             </thead>
@@ -305,7 +300,7 @@
             
             {% for item in votes %} 
             <tr data-id="{{item.id}}">
-            <td><a class="allif-table-links" href="{% url 'awards:categoryDetails' item.id %}">{{item.voter}}</a></td>
+            <td><a class="allif-table-links" href="{% url 'awards:voteDetails' item.id %}">{{item.voter}}</a></td>
            
             <td>
                 {{item.date|date:'d/m/Y'}}
