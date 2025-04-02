@@ -44,7 +44,7 @@ DEBUG = True
 #else:
     #STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #DEBUG = os.environ.get('ALLIF_DJANGO_DEBUG', '')
-ALLOWED_HOSTS = ['ahmeddove.pythonanywhere.com','127.0.0.1','localhost','http://0.0.0.0:8000/']
+#ALLOWED_HOSTS = ['ahmeddove.pythonanywhere.com','127.0.0.1','localhost','http://0.0.0.0:8000/']
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-$@($ofh@)3j5cly(5yo-b6+3r)7pg7flt&m-z+*kon)2)%q*#0'
@@ -52,7 +52,7 @@ SECRET_KEY = 'django-insecure-$@($ofh@)3j5cly(5yo-b6+3r)7pg7flt&m-z+*kon)2)%q*#0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['globalmeritaward.com','globalmeritawards.pythonanywhere.com','127.0.0.1','localhost','http://0.0.0.0:8000/']
+ALLOWED_HOSTS = ['www.globalmeritaward.com','globalmeritawards.pythonanywhere.com','127.0.0.1','localhost','http://0.0.0.0:8000/']
 
 #SECRET_KEY =allif_get_env_var("ALLIF_DJANGO_SECRET_KEY")
 #EMAIL_BACKEND=allif_get_env_var("ALLIF_EMAIL_BACKEND","email-backend")
