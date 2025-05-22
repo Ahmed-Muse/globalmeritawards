@@ -145,10 +145,23 @@ WSGI_APPLICATION = 'globalmeritawards.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'allifgmadb',# this is the name of the database
+        'USER': 'root',
+        'PASSWORD': 'Allif@1442',# Allif@6030114
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}  
+
+"""
+DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+"""
 """
 DATABASES = {
     "default": {
